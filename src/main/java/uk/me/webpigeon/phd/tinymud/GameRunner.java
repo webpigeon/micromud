@@ -1,7 +1,6 @@
 package uk.me.webpigeon.phd.tinymud;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import uk.me.webpigeon.phd.tinymud.agents.local.RandomAgent;
 import uk.me.webpigeon.phd.tinymud.world.GraphWorld;
 import uk.me.webpigeon.phd.tinymud.world.NodeRoom;
 import uk.me.webpigeon.phd.tinymud.world.Room;
-import uk.me.webpigeon.phd.tinymud.world.World;
 
 public class GameRunner {
 	public static final Integer MAX_TICKS = 1000;

@@ -1,6 +1,5 @@
 package uk.me.webpigeon.phd.tinymud;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import uk.me.webpigeon.phd.tinymud.data.UpdatableState;
@@ -22,6 +21,7 @@ public class LinkInfomation implements Precept {
 		}
 	}
 	
+	@Override
 	public String toString() {
 		return String.format(INFOFMT, roomID, links);
 	}

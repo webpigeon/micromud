@@ -46,6 +46,7 @@ public class RandomAgent implements AgentController {
 		return moves.get(randomMove);
 	}
 	
+	@Override
 	public String toString() {
 		return "Agent(RandomAgent)";
 	}

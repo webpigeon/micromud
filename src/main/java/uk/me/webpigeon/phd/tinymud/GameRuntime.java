@@ -1,8 +1,6 @@
 package uk.me.webpigeon.phd.tinymud;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +8,6 @@ import java.util.logging.Logger;
 
 import uk.me.webpigeon.phd.tinymud.data.UpdatableState;
 import uk.me.webpigeon.phd.tinymud.world.GraphWorld;
-import uk.me.webpigeon.phd.tinymud.world.Item;
-import uk.me.webpigeon.phd.tinymud.world.World;
 
 /**
  * The server side game model.

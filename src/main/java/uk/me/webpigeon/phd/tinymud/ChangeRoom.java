@@ -2,7 +2,6 @@ package uk.me.webpigeon.phd.tinymud;
 
 import java.util.List;
 
-import uk.me.webpigeon.phd.tinymud.data.GameState;
 import uk.me.webpigeon.phd.tinymud.data.UpdatableState;
 
 public class ChangeRoom implements Move {
@@ -46,6 +45,7 @@ public class ChangeRoom implements Move {
 		return "move to <"+newRoomID+">";
 	}
 	
+	@Override
 	public String toString() {
 		return "MOVE("+newRoomID+")";
 	}

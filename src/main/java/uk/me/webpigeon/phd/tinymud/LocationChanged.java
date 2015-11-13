@@ -17,6 +17,7 @@ public class LocationChanged implements Precept {
 		model.setLocation(agentID, newLocation);
 	}
 	
+	@Override
 	public String toString() {
 		return String.format(INFOFMT, agentID, newLocation);
 	}

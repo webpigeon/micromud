@@ -2,7 +2,6 @@ package uk.me.webpigeon.phd.tinymud.data;
 
 import java.util.List;
 
-import uk.me.webpigeon.phd.tinymud.AgentController;
 import uk.me.webpigeon.phd.tinymud.Move;
 
 public interface ForwardModel {

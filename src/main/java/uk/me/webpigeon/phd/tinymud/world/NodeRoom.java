@@ -13,6 +13,7 @@ public class NodeRoom extends Room {
 		return name;
 	}
 	
+	@Override
 	public String toString() {
 		return String.format(STR_FORMAT, name);
 	}

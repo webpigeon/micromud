@@ -1,11 +1,5 @@
 package uk.me.webpigeon.phd.tinymud.data;
 
-import java.util.List;
-
-import uk.me.webpigeon.phd.tinymud.AgentController;
-import uk.me.webpigeon.phd.tinymud.world.Item;
-import uk.me.webpigeon.phd.tinymud.world.Room;
-
 public interface InformedForwardModel extends ForwardModel, GameState {
 	
 	/**

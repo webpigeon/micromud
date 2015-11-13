@@ -3,7 +3,6 @@ package uk.me.webpigeon.phd.tinymud;
 import java.util.List;
 
 import uk.me.webpigeon.phd.tinymud.data.GameState;
-import uk.me.webpigeon.phd.tinymud.world.World;
 
 public interface AgentController {
 
