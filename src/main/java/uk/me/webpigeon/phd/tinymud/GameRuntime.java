@@ -40,6 +40,7 @@ public class GameRuntime {
 		precepts.put(agentID, new ArrayList<Precept>());
 		
 		//let all existing players know there is a new player
+		agent.setup("LIMBO", agentID);
 		spawnAgent(agentID);
 		
 		return agentID;
@@ -87,6 +88,19 @@ public class GameRuntime {
 		List<Precept> perceptList = precepts.get(agentID);
 		if (perceptList != null) {
 			perceptList.clear();
+		}
+	}
+	
+	public void doTick(){
+		for (Map.Entry<String, AgentController> agentEntry : agents.entrySet()) {
+			AgentController agent = agentEntry.getValue();
+			String agentID = agentEntry.getKey();
+			
+			List<Precept> precepts = getPreceptsFor(agentID);
+			clearPrecepts(agentID);
+
+			Move move = agent.getMove(null, precepts);
+			execute(agentID, move);
 		}
 	}
 

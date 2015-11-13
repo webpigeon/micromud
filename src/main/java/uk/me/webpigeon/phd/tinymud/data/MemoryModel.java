@@ -134,7 +134,6 @@ public class MemoryModel implements InformedForwardModel, UpdatableState {
 	}
 
 	public void update(List<Precept> bundle) {
-		System.out.println(bundle);
 		for (Precept percept : bundle) {
 			percept.update(this);
 		}
