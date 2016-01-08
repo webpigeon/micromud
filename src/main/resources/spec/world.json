@@ -1,0 +1,11 @@
+{
+	"rooms": [
+		{"id": "main-street", "name":"Main Street", "description": "You see a busy street filled with people going about their daily activities. The sides of street are lined with all manor of shops and businesses."},
+		{"id": "bakery", "name":"Bakery", "description": ""},
+		{"id": "well", "name":"Well", "description": ""}
+	],
+	"links": {
+		"main-street": {"W": "bakery", "N": "well"},
+		"bakery": {"E": "main-street"}
+	}
+}

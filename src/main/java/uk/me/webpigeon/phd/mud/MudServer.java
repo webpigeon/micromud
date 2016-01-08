@@ -1,0 +1,100 @@
+package uk.me.webpigeon.phd.mud;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.jdo.JDOHelper;
+import javax.jdo.JDOObjectNotFoundException;
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Transaction;
+
+import org.datanucleus.exceptions.NucleusObjectNotFoundException;
+
+import com.google.gson.Gson;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+
+import uk.me.webpigeon.phd.mud.engine.Command;
+import uk.me.webpigeon.phd.mud.engine.CommandRegistry;
+import uk.me.webpigeon.phd.mud.engine.MudService;
+import uk.me.webpigeon.phd.mud.engine.NetServer;
+import uk.me.webpigeon.phd.mud.modules.test.Avatar;
+import uk.me.webpigeon.phd.mud.modules.world.Room;
+import uk.me.webpigeon.phd.mud.modules.world.WorldService;
+
+/**
+ * Run the mud service standalone (useful for debugging)
+ *
+ */
+public class MudServer {
+	private static final Logger LOG = Logger.getLogger(MudServer.class.getCanonicalName());
+	
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		LOG.info("Mud server starting");
+		
+		//Create list of modules from config
+		EngineConfig config = loadInternalFile("spec/engine.json", EngineConfig.class);
+		
+		Injector injector = buildInjector(config.modules);
+		
+		//create the core services
+		MudService mud = injector.getInstance(MudService.class);
+		CommandRegistry commands = injector.getInstance(CommandRegistry.class);
+		
+		//build the list of commands
+		processCommands(config.commands, injector, commands);
+		
+		WorldService world = injector.getInstance(WorldService.class);
+		world.init();
+		
+		//Start the netserver
+		NetServer netServer = injector.getInstance(NetServer.class);
+		netServer.start();
+		netServer.debugJoin();	
+		
+		LOG.info("Mud server closed");
+	}
+	
+	private static void processCommands(Map<String,String> commandNames, Injector injector, CommandRegistry registry) throws ClassNotFoundException {
+		for (Map.Entry<String,String> commandConfig : commandNames.entrySet()) {
+			String verb = commandConfig.getKey();
+			String clazz = commandConfig.getValue();
+			
+			Command command = (Command)injector.getInstance(Class.forName(clazz));
+			registry.register(verb, command);
+		}
+	}
+	
+	private static Injector buildInjector(List<String> moduleNames) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		List<Module> modules = new ArrayList<Module>();
+		for (String moduleName : moduleNames) {
+			Class<?> moduleClass = Class.forName(moduleName);
+			Module module = (Module)moduleClass.newInstance();
+			modules.add(module);
+		}
+		return Guice.createInjector(modules);
+	}
+	
+	public static <T>  T loadInternalFile(String path, Class<T> clazz) {
+		Gson gson = new Gson();
+		try {
+			ClassLoader loader = MudServer.class.getClassLoader();
+			InputStream is = loader.getResourceAsStream(path);
+			BufferedReader bis = new BufferedReader(new InputStreamReader(is));
+			return gson.fromJson(bis, clazz);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+}
