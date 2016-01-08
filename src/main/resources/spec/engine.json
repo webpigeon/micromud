@@ -3,12 +3,5 @@
 		"uk.me.webpigeon.phd.mud.engine.impl.BasicServerModule",
 		"uk.me.webpigeon.phd.mud.modules.world.WorldModule",
 		"uk.me.webpigeon.phd.mud.modules.test.DebugModule"
-	],
-	"commands": {
-		"test": "uk.me.webpigeon.phd.mud.modules.test.TestCommand",
-		"debug": "uk.me.webpigeon.phd.mud.modules.test.DebugSpawn",
-		"exits": "uk.me.webpigeon.phd.mud.modules.world.impl.ExitsCommand",
-		"look": "uk.me.webpigeon.phd.mud.modules.world.impl.LookCommand",
-		"go": "uk.me.webpigeon.phd.mud.modules.world.impl.MoveCommand"
-	}
+	]
 }

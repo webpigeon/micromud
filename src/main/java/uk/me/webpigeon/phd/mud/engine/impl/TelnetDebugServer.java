@@ -14,7 +14,7 @@ import uk.me.webpigeon.phd.mud.engine.NetServer;
 import uk.me.webpigeon.phd.mud.engine.SessionManager;
 
 public class TelnetDebugServer implements NetServer, Runnable {
-	private static final Integer SERVER_PORT = 1337;
+	private static final Integer DEFAULT_SERVER_PORT = 1337;
 	private Thread thead;
 	
 	private ExecutorService clients;
@@ -38,7 +38,10 @@ public class TelnetDebugServer implements NetServer, Runnable {
 
 	@Override
 	public void run() {
-		try ( ServerSocket serverSocket = new ServerSocket(SERVER_PORT); ){
+		String portString = System.getenv("SERVER_PORT");
+		int port = portString==null?DEFAULT_SERVER_PORT:Integer.parseInt(portString);
+		
+		try ( ServerSocket serverSocket = new ServerSocket(port); ){
 			
 			while(!Thread.interrupted()) {
 				Socket clientSocket = serverSocket.accept();

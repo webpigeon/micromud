@@ -1,7 +1,10 @@
 package uk.me.webpigeon.phd.mud.engine.impl;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.MapBinder;
+import com.google.inject.multibindings.Multibinder;
 
+import uk.me.webpigeon.phd.mud.engine.Command;
 import uk.me.webpigeon.phd.mud.engine.CommandRegistry;
 import uk.me.webpigeon.phd.mud.engine.MudService;
 import uk.me.webpigeon.phd.mud.engine.NetServer;

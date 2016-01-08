@@ -1,9 +1,8 @@
 package uk.me.webpigeon.phd.mud.engine.impl;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import uk.me.webpigeon.phd.mud.engine.Command;
@@ -13,8 +12,9 @@ import uk.me.webpigeon.phd.mud.engine.CommandRegistry;
 public class SimpleCommandRegistry implements CommandRegistry {
 	private Map<String, Command> commands;
 	
-	public SimpleCommandRegistry(){
-		this.commands = new HashMap<>();
+	@Inject
+	public SimpleCommandRegistry(Map<String,Command> commands){
+		this.commands = commands;
 	}
 	
 	public void register(String verb, Command command){

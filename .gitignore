@@ -1,5 +1,9 @@
 #maven
 target/
 
+# Eclipse
+.settings/
+.classpath
+
 # used for experimental persitance
 *.ods 

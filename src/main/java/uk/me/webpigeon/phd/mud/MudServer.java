@@ -23,12 +23,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import uk.me.webpigeon.phd.mud.engine.Command;
-import uk.me.webpigeon.phd.mud.engine.CommandRegistry;
 import uk.me.webpigeon.phd.mud.engine.MudService;
 import uk.me.webpigeon.phd.mud.engine.NetServer;
-import uk.me.webpigeon.phd.mud.modules.test.Avatar;
-import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.WorldService;
 
 /**
@@ -48,10 +44,6 @@ public class MudServer {
 		
 		//create the core services
 		MudService mud = injector.getInstance(MudService.class);
-		CommandRegistry commands = injector.getInstance(CommandRegistry.class);
-		
-		//build the list of commands
-		processCommands(config.commands, injector, commands);
 		
 		WorldService world = injector.getInstance(WorldService.class);
 		world.init();
@@ -62,16 +54,6 @@ public class MudServer {
 		netServer.debugJoin();	
 		
 		LOG.info("Mud server closed");
-	}
-	
-	private static void processCommands(Map<String,String> commandNames, Injector injector, CommandRegistry registry) throws ClassNotFoundException {
-		for (Map.Entry<String,String> commandConfig : commandNames.entrySet()) {
-			String verb = commandConfig.getKey();
-			String clazz = commandConfig.getValue();
-			
-			Command command = (Command)injector.getInstance(Class.forName(clazz));
-			registry.register(verb, command);
-		}
 	}
 	
 	private static Injector buildInjector(List<String> moduleNames) throws InstantiationException, IllegalAccessException, ClassNotFoundException {

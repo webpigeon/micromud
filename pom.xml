@@ -54,22 +54,43 @@
 				</executions>
 			</plugin>
 			<!-- other plugins here -->
-    <plugin>
-      <groupId>com.github.github</groupId>
-      <artifactId>site-maven-plugin</artifactId>
-      <version>0.12</version>
-      <configuration>
-        <message>Creating site for ${project.version}</message>
-      </configuration>
-      <executions>
-        <execution>
-          <goals>
-            <goal>site</goal>
-          </goals>
-          <phase>site</phase>
-        </execution>
-      </executions>
-    </plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
+				<configuration>
+					<message>Creating site for ${project.version}</message>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>uk.me.webpigeon.phd.mud.MudServer</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -111,6 +132,11 @@
 			<artifactId>guice</artifactId>
 			<version>4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+			<version>4.0</version>
+		</dependency>		
 	</dependencies>
 </project>
 
