@@ -1,7 +1,6 @@
 package uk.me.webpigeon.phd.mud.modules.items;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.jdo.PersistenceManager;
 
@@ -14,7 +13,6 @@ import uk.me.webpigeon.phd.mud.modules.test.Avatar;
 
 /**
  * List the contents of the player's inventory.
- *
  */
 public class ObjectsCommand implements Command {
 	private InventoryService inventory;
@@ -30,9 +28,7 @@ public class ObjectsCommand implements Command {
 		Avatar avatar = session.getAvatar();
 		
 		Collection<Item> items = inventory.getItems(avatar);
-		
-		StringBuilder builder = new StringBuilder();
-		
+		session.addPercept(new InventoryPercept(avatar, items));
 	}
 
 }
