@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
 import uk.me.webpigeon.phd.mud.engine.MudService;
 import uk.me.webpigeon.phd.mud.engine.NetServer;
@@ -58,6 +59,8 @@ public class MudServer {
 	
 	private static Injector buildInjector(List<String> moduleNames) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		List<Module> modules = new ArrayList<Module>();
+		modules.add(new JpaPersistModule("mudCore"));
+		
 		for (String moduleName : moduleNames) {
 			Class<?> moduleClass = Class.forName(moduleName);
 			Module module = (Module)moduleClass.newInstance();

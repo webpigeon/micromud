@@ -5,7 +5,7 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
 
     <!-- JDO tutorial "unit" -->
-    <persistence-unit name="Tutorial">
+    <persistence-unit name="MudCore">
         <class>uk.me.webpigeon.phd.mud.modules.world.Room</class>
         <class>uk.me.webpigeon.phd.mud.modules.test.Avatar</class>
         <exclude-unlisted-classes/>

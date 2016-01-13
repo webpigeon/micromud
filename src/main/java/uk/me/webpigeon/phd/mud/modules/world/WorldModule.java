@@ -1,5 +1,11 @@
 package uk.me.webpigeon.phd.mud.modules.world;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import org.datanucleus.store.connection.ConnectionFactory;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.MapBinder;
 
@@ -13,6 +19,13 @@ public class WorldModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		try {
+			Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/mud","postgres", "password42");
+			bind(Connection.class).toInstance(conn);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		
 		bind(WorldService.class).to(GraphWorldService.class);
 		
 		MapBinder<String,Command> commandBinder = MapBinder.newMapBinder(binder(), String.class, Command.class);
