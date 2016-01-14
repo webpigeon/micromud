@@ -36,7 +36,7 @@ public class DebugSpawn implements Command {
 		System.out.println("dummy avatar created");
 		AvatarPercept percept = new AvatarPercept(dummyAvatar);
 		session.setAvatar(dummyAvatar);
-		session.addPercept(percept);
+		//session.addPercept(percept);
 		
 		//put the dummy avatar in the spawn location
 		Room spawn = world.getRoom(SPAWN_ROOM);

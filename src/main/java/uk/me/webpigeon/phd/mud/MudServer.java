@@ -21,7 +21,9 @@ import org.datanucleus.exceptions.NucleusObjectNotFoundException;
 import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import com.google.inject.Module;
+import com.google.inject.name.Names;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
 import uk.me.webpigeon.phd.mud.engine.MudService;
@@ -50,9 +52,14 @@ public class MudServer {
 		world.init();
 		
 		//Start the netserver
-		NetServer netServer = injector.getInstance(NetServer.class);
+		NetServer npcServer = injector.getInstance(Key.get(NetServer.class, Names.named("npc")));
+		npcServer.start();
+		
+		NetServer netServer = injector.getInstance(Key.get(NetServer.class, Names.named("client")));
 		netServer.start();
-		netServer.debugJoin();	
+		
+		npcServer.debugJoin();	
+		netServer.debugJoin();
 		
 		LOG.info("Mud server closed");
 	}
