@@ -1,6 +1,8 @@
 package uk.me.webpigeon.phd.mud.modules.world;
 
+import java.util.Collection;
 import java.util.Map;
+
 
 public interface WorldService {
 	
@@ -11,5 +13,7 @@ public interface WorldService {
 	public Map<Direction, String> getLinks(String roomFor);
 
 	public Room getRoomAt(Room currentRoom, Direction direction);
+
+	public Collection<String> getPlayers(String id);
 	
 }

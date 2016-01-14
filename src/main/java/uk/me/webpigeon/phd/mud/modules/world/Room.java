@@ -1,6 +1,8 @@
 package uk.me.webpigeon.phd.mud.modules.world;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,5 +59,9 @@ public class Room extends GameData {
 	
 	public boolean containsAvatar(Avatar avatar){
 		return avatars.contains(avatar);
+	}
+
+	public Collection<Avatar> getAvatars() {
+		return Collections.unmodifiableCollection(avatars);
 	}
 }

@@ -1,0 +1,47 @@
+syntax = "proto2";
+package mud;
+
+import "mud-core.proto";
+
+/**
+ * MUD protocol extension: Graph Based Worlds
+ *
+ * This protocol extension allows agents to move between rooms which
+ * have exits.
+ *
+ * RESERVED PROTOCOL RANGE: 111000 - 111999
+ */
+
+option java_package = "uk.me.webpigeon.phd.mud.protocol";
+//option java_outer_classname = "MudRoomProto";
+
+extend ServerResponse {
+
+	optional RoomPercept room_ext = 111001;
+	optional ExitsPercept exits_ext = 111002;
+	optional MovementPercept move_ext = 111103;
+}
+
+message RoomExit {
+	required string direction = 1;
+	required string roomId = 2;
+}
+
+message ExitsPercept {
+	required string id = 1;
+	repeated RoomExit exit = 2;
+}
+
+message RoomPercept {
+	required string id = 1;
+	required string name = 2;
+	optional string description = 3;
+	repeated RoomExit exit = 4;
+	repeated string player = 5;
+}
+
+message MovementPercept {
+	required string who = 1;
+	required string oldRoom = 2;
+	required string newRoom = 3;
+}

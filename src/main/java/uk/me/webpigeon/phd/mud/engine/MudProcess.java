@@ -16,22 +16,15 @@ public class MudProcess implements Runnable {
 	
 	@Override
 	public void run() {
-		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Tutorial");
-		PersistenceManager pm = pmf.getPersistenceManager();
+		//PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Tutorial");
+		//PersistenceManager pm = pmf.getPersistenceManager();
 		
-		Transaction tx = pm.currentTransaction();
+		//Transaction tx = pm.currentTransaction();
 		
 		try {
-			tx.begin();
-			task.execute(context, pm);
-			tx.commit();
+			task.execute(context, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
 		}
 	}
 

@@ -1,7 +1,7 @@
 {
 	"rooms": [
 		{"id": "main-street", "name":"Main Street", "description": "You see a busy street filled with people going about their daily activities. The sides of street are lined with all manor of shops and businesses."},
-		{"id": "bakery", "name":"Bakery", "description": ""},
+		{"id": "bakery", "name":"Bakery", "description": "You stand in a large room with a wooden floor. In the middle of the shop floor there is an ornate counter. Towards the back of the room there is an oven."},
 		{"id": "well", "name":"Well", "description": ""}
 	],
 	"links": {

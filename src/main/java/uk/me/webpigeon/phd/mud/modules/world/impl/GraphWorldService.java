@@ -1,7 +1,11 @@
 package uk.me.webpigeon.phd.mud.modules.world.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,10 +21,12 @@ import uk.me.webpigeon.phd.mud.modules.world.impl.WorldConfig.RoomData;
 public class GraphWorldService implements WorldService {
 	private Map<String, Room> rooms;
 	private Map<String, Map<Direction, String>> links;
+	private Map<String, List<String>> playerLocations;
 	
 	public GraphWorldService() {
 		this.rooms = new HashMap<String, Room>();
 		this.links = new HashMap<String, Map<Direction, String>>();
+		this.playerLocations = new HashMap<String, List<String>>();
 	}
 	
 	public void buildGraph() {
@@ -79,6 +85,32 @@ public class GraphWorldService implements WorldService {
 
 		String roomID = roomLinks.get(direction);
 		return rooms.get(roomID);
+	}
+	
+	public void setPlayerAt(String room, String player) {
+		List<String> players = playerLocations.get(room);
+		if (players == null) {
+			players = new ArrayList<String>();
+			playerLocations.put(room, players);
+		}
+		players.add(player);
+	}
+	
+	public void rmPlayerAt(String room, String player) {
+		List<String> players = playerLocations.get(room);
+		if (players != null) {
+			players.remove(player);
+		}
+	}
+
+	@Override
+	public Collection<String> getPlayers(String id) {
+		List<String> players = playerLocations.get(id);
+		if (players == null) {
+			return Collections.emptyList();
+		}
+		
+		return players;
 	}
 
 }

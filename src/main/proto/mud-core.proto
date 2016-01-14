@@ -1,0 +1,33 @@
+syntax = "proto2";
+package mud;
+
+/**
+ * MUD core protocol
+ *
+ * Extensions:
+ * GRAPH WORLD: 111000 - 111999
+ */
+
+
+option java_package = "uk.me.webpigeon.phd.mud.protocol";
+//option java_outer_classname = "MudCoreProto";
+
+message ServerResponse {
+	optional uint32 type = 1;
+	extensions 10000 to max;
+}
+
+message MudAbout {
+	required string name = 1;
+	repeated string options = 2;
+}
+
+message LoginReqest {
+	required string email = 1;
+	required string password = 2;
+}
+
+message RegistrationRequest {
+	required string email = 1;
+	required string password = 2;
+}

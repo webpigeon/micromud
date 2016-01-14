@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -69,6 +70,13 @@ public class DatabaseWorldService extends SQLModel<Room> implements WorldService
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public Collection<String> getPlayers(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

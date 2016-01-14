@@ -1,5 +1,8 @@
 package uk.me.webpigeon.phd.mud.modules.world.impl;
 
+import java.util.Collection;
+import java.util.Map;
+
 import javax.jdo.PersistenceManager;
 
 import com.google.inject.Inject;
@@ -11,6 +14,8 @@ import uk.me.webpigeon.phd.mud.modules.test.Avatar;
 import uk.me.webpigeon.phd.mud.modules.world.Direction;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.WorldService;
+import uk.me.webpigeon.phd.mud.protocol.MudCore;
+import uk.me.webpigeon.phd.mud.protocol.MudWorld;
 
 public class MoveCommand implements Command {
 	private WorldService world;
@@ -57,12 +62,35 @@ public class MoveCommand implements Command {
 			currentRoom.removeAvatar(avatar);
 			newRoom.addAvatar(avatar);
 			
-			//TODO notify other players
 			
-			//let the player know they moved
-			currentUser.addPercept(new PlayerMovementPercept(avatar.getName(), currentRoom.getID(), newRoom.getID()));
-			currentUser.addPercept(new RoomPercept(newRoom));
-			currentUser.addPercept(new ExitsPercept(newRoom.getID(), world.getLinks(newRoom.getID())));
+			//TODO notify other players
+			MudWorld.MovementPercept.Builder moved = MudWorld.MovementPercept.newBuilder().setWho(avatar.getName()).setOldRoom(currentRoom.getID()).setNewRoom(newRoom.getID());
+			MudWorld.RoomPercept.Builder rp = MudWorld.RoomPercept.newBuilder().setId(newRoom.getID()).setName(newRoom.getName()).setDescription(newRoom.getDescription());
+			
+			Collection<Avatar> players = newRoom.getAvatars();
+			for (Avatar rAvatar : players) {
+				rp.addPlayer(rAvatar.getName());
+			}
+			
+			Map<Direction,String> links = world.getLinks(newRoom.getID());
+			for (Map.Entry<Direction, String> entry : links.entrySet()) {
+				MudWorld.RoomExit.Builder reb = MudWorld.RoomExit.newBuilder();
+				reb.setRoomId(entry.getValue());
+				reb.setDirection(entry.getKey().toString());
+				rp.addExit(reb.build());
+			}
+			
+			MudCore.ServerResponse.Builder resp = MudCore.ServerResponse.newBuilder();
+			resp.setType(MudWorld.ROOM_EXT_FIELD_NUMBER);
+			resp.setExtension(MudWorld.roomExt, rp.build());
+			currentUser.addPercept(resp.build());
+			
+			MudCore.ServerResponse.Builder resp2 = MudCore.ServerResponse.newBuilder();
+			resp2.setType(MudWorld.MOVE_EXT_FIELD_NUMBER);
+			resp2.setExtension(MudWorld.moveExt, moved.build());
+			currentUser.addPercept(resp2.build());
+			
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

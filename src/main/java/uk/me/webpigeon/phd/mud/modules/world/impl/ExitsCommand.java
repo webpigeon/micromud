@@ -14,6 +14,8 @@ import uk.me.webpigeon.phd.mud.modules.test.Avatar;
 import uk.me.webpigeon.phd.mud.modules.world.Direction;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.WorldService;
+import uk.me.webpigeon.phd.mud.protocol.MudCore;
+import uk.me.webpigeon.phd.mud.protocol.MudWorld;
 
 public class ExitsCommand implements Command {
 	private WorldService world;
@@ -47,7 +49,23 @@ public class ExitsCommand implements Command {
 				links = Collections.emptyMap();
 			}
 			
-			currentUser.addPercept(new ExitsPercept(room.getID(), links));
+			MudWorld.ExitsPercept.Builder epb = MudWorld.ExitsPercept.newBuilder();
+			epb.setId(room.getName());
+			
+			//build room link description
+			for (Map.Entry<Direction, String> entry : links.entrySet()) {
+				MudWorld.RoomExit.Builder reb = MudWorld.RoomExit.newBuilder();
+				reb.setRoomId(entry.getValue());
+				reb.setDirection(entry.getKey().toString());
+				epb.addExit(reb.build());
+			}
+			
+			//build the server response
+			MudCore.ServerResponse.Builder resp = MudCore.ServerResponse.newBuilder();
+			resp.setType(MudWorld.EXITS_EXT_FIELD_NUMBER);
+			resp.setExtension(MudWorld.exitsExt, epb.build());
+			
+			currentUser.addPercept(resp.build());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

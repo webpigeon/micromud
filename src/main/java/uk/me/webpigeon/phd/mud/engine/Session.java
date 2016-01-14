@@ -2,7 +2,10 @@ package uk.me.webpigeon.phd.mud.engine;
 
 import java.util.UUID;
 
+import com.google.protobuf.Message;
+
 import uk.me.webpigeon.phd.mud.modules.test.Avatar;
+import uk.me.webpigeon.phd.mud.protocol.MudCore.ServerResponse;
 
 public abstract class Session {
 	private UUID id;
@@ -27,7 +30,13 @@ public abstract class Session {
 		return id;
 	}
 
+	@Deprecated
 	public abstract void addPercept(Percept percept);
+	
+	public void addPercept(ServerResponse message){
+		System.out.println("something went bananas");
+	}
+	
 	public abstract boolean isDead();
 
 	public void onRegister(UUID id) {}

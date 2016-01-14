@@ -9,7 +9,6 @@ import uk.me.webpigeon.phd.mud.engine.Context;
 import uk.me.webpigeon.phd.mud.engine.Session;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.WorldService;
-import uk.me.webpigeon.phd.mud.modules.world.impl.RoomPercept;
 
 public class DebugSpawn implements Command {
 	private static final String SPAWN_ROOM = "main-street";
@@ -34,6 +33,7 @@ public class DebugSpawn implements Command {
 		
 		//create a new dummy avatar
 		Avatar dummyAvatar = avatars.createNew("DummyAvatar-"+System.currentTimeMillis());
+		System.out.println("dummy avatar created");
 		AvatarPercept percept = new AvatarPercept(dummyAvatar);
 		session.setAvatar(dummyAvatar);
 		session.addPercept(percept);
@@ -41,6 +41,6 @@ public class DebugSpawn implements Command {
 		//put the dummy avatar in the spawn location
 		Room spawn = world.getRoom(SPAWN_ROOM);
 		spawn.addAvatar(dummyAvatar);
-		session.addPercept(new RoomPercept(spawn));
+		//session.addPercept(new RoomPercept(spawn));
 	}
 }
