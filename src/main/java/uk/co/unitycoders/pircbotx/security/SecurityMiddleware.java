@@ -30,8 +30,15 @@ public class SecurityMiddleware extends AbstractMiddleware {
 		//check the user's permissions
 		String[] permissions = module.getRequiredPermissions(action);
 		Session session = message.getSession();
+		if (session == null) {
+			session = security.getSession(message.getSessionKey());
+			if (session != null) {
+				message.setSession(session);
+			}
+		}
 		
-		if (session != null) {
+		
+		if (session != null && session.isLoggedIn()) {
 			//if the user has a session, check if they have all the required permissions
 			for (String permission : permissions) {
 				if (!session.hasPermission(permission)) {

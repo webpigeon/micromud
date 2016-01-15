@@ -8,11 +8,15 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.ChannelHandler.Sharable;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandNotFoundException;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+
 import uk.me.webpigeon.phd.mud.botlink.HumanMudMessage;
 
+@Sharable
 public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 	
 	private final CommandProcessor processor;

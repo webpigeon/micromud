@@ -24,6 +24,12 @@ public abstract class AbstractMessage implements Message {
 		return session;
 	}
 
+
+	@Override
+	public void setSession(Session session) {
+		this.session = session;
+	}
+	
 	@Override
 	public String getSessionKey() {
 		return sessionKey;

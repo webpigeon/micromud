@@ -24,7 +24,7 @@ public class DebugInfo extends AnnotationModule {
 	}
 	
 	@Command("ping")
-	public void doPint(Message message) {
+	public void doPing(Message message) {
 		message.respond("pong");
 	}
 	

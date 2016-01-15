@@ -28,9 +28,13 @@ public class SecurityManager {
         this.sessions = new HashMap<String, Session>();
     }
     
-    public void startSession(String sessionKey) {
-        Session session = new Session();
-        sessions.put(sessionKey, session);
+    public Session startSession(Session session) {    	
+        sessions.put(session.getKey(), session);
+        return session;
+    }
+    
+    public Session startSession(String sessionKey) {
+        return startSession(new Session(sessionKey));
     }
    
     public void endSession(String sessionKey){

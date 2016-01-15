@@ -34,6 +34,8 @@ public interface Message {
      * @return the user which sent the message
      */
     public Session getSession();
+	public void setSession(Session session);
+	
     public String getSessionKey();
     
     /**
