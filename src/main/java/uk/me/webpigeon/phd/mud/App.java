@@ -10,6 +10,8 @@ public class App
 {
     public static void main( String[] args ) throws Exception
     {
+    	
+    	
     	TelnetServer telnet = new TelnetServer(1337);
     	telnet.run();
     	
