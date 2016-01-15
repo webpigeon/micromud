@@ -1,0 +1,10 @@
+#maven
+target/
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# used for experimental persitance
+*.ods 
