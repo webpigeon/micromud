@@ -1,9 +1,9 @@
 package uk.me.webpigeon.phd.mud;
 
-import uk.me.webpigeon.phd.mud.world.BasicGraphWorld;
-import uk.me.webpigeon.phd.mud.world.Direction;
-import uk.me.webpigeon.phd.mud.world.Room;
-import uk.me.webpigeon.phd.mud.world.WorldModel;
+import uk.me.webpigeon.phd.mud.modules.world.BasicGraphWorld;
+import uk.me.webpigeon.phd.mud.modules.world.Direction;
+import uk.me.webpigeon.phd.mud.modules.world.Room;
+import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 
 public class DebugUtils {
 	

@@ -13,13 +13,13 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
-import uk.me.webpigeon.phd.mud.accounts.AccountManagement;
-import uk.me.webpigeon.phd.mud.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
+import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
+import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
+import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
+import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
+import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 import uk.me.webpigeon.phd.mud.netty.TelnetServer;
-import uk.me.webpigeon.phd.mud.world.PlayerMovement;
-import uk.me.webpigeon.phd.mud.world.WorldCommands;
-import uk.me.webpigeon.phd.mud.world.WorldModel;
 
 /**
  * Hello world!

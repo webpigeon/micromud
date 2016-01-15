@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.accounts;
+package uk.me.webpigeon.phd.mud.modules.accounts;
 
 import java.util.HashMap;
 import java.util.Map;

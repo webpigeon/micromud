@@ -1,9 +1,9 @@
-package uk.me.webpigeon.phd.mud.world;
+package uk.me.webpigeon.phd.mud.modules.world;
 
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.security.Secured;
 import uk.co.unitycoders.pircbotx.security.Session;
-import uk.me.webpigeon.phd.mud.accounts.Account;
+import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 

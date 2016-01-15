@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.world;
+package uk.me.webpigeon.phd.mud.modules.world;
 
 public class Room {
 	private final String name;

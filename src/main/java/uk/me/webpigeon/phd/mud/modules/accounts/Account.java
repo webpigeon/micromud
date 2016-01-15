@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.accounts;
+package uk.me.webpigeon.phd.mud.modules.accounts;
 
 public class Account {
 	public static final String NAME_PROP = "mud.accounts.name";
