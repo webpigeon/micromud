@@ -11,12 +11,18 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.ssl.SslContext;
+import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 
 public class TelnetServer {
 	private int port;
+	private SslContext ctx;
+	private CommandProcessor processor;
 	
-	public TelnetServer(int port) {
+	public TelnetServer(int port, CommandProcessor processor, SslContext ctx) {
 		this.port = port;
+		this.ctx = ctx;
+		this.processor = processor;
 		System.out.println("telnet server created");
 	}
 	
@@ -29,7 +35,7 @@ public class TelnetServer {
 			b.group(bossGroup, workerGroup)
 			 .channel(NioServerSocketChannel.class)
 			 .handler(new LoggingHandler(LogLevel.INFO))
-			 .childHandler(new TelnetServerInitialiser())
+			 .childHandler(new TelnetServerInitialiser(ctx, processor))
 			 .option(ChannelOption.SO_BACKLOG, 128)
 			 .childOption(ChannelOption.SO_KEEPALIVE, true);
 			
