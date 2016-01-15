@@ -81,6 +81,7 @@ public class PlayerMovement extends AnnotationModule {
 		
 		Room spawnRoom = world.getRoomAt("limbo");
 		world.setPlayerRoom(account, spawnRoom);
+		session.setProp(Account.ROOM_PROP, spawnRoom.getName());
 		message.respond("A bright flash of light blinds you.");
 	}
 	
@@ -111,6 +112,7 @@ public class PlayerMovement extends AnnotationModule {
 		
 		world.setPlayerRoom(account, nextRoom);
 		message.respond("You move into "+nextRoom.getName());
+		session.setProp(Account.ROOM_PROP, nextRoom.getName());
 	}
 
 }

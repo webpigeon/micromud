@@ -16,6 +16,9 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
+import uk.me.webpigeon.phd.mud.modules.items.DemoItemModel;
+import uk.me.webpigeon.phd.mud.modules.items.InventoryCommands;
+import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
 import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
@@ -42,6 +45,16 @@ public class App {
 		WorldModel world = DebugUtils.buildWorld();
 		processor.register("go", new PlayerMovement(world));
 		processor.register("world", new WorldCommands(world));
+		
+		//inventory releated
+		ItemModel items = DebugUtils.buildInventory();
+		processor.register("items", new InventoryCommands(items));
+		
+		//start the heart beat system
+		Heartbeat hb = new Heartbeat();
+		Thread hbt = new Thread(hb);
+		hbt.start();
+		
 		
 		TelnetServer telnet = buildTelnetServer(processor);
 		telnet.run();

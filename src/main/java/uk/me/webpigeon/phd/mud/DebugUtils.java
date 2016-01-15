@@ -1,5 +1,9 @@
 package uk.me.webpigeon.phd.mud;
 
+import uk.me.webpigeon.phd.mud.modules.items.DemoItemModel;
+import uk.me.webpigeon.phd.mud.modules.items.Item;
+import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
+import uk.me.webpigeon.phd.mud.modules.items.Tags;
 import uk.me.webpigeon.phd.mud.modules.world.BasicGraphWorld;
 import uk.me.webpigeon.phd.mud.modules.world.Direction;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
@@ -47,6 +51,36 @@ public class DebugUtils {
 		world.link(limbo, mainStreet, Direction.NORTH);
 		
 		return world;
+	}
+
+	public static ItemModel buildInventory() {		
+		ItemModel model = new DemoItemModel();
+		
+		Item shelf = new Item("shelf");
+		shelf.setDescription("The shelf contians a bunch of cakes, on closer inspection you see they are made of plaster.");
+		shelf.addTag(Tags.ANCHORED);
+		shelf.setWeight(45_000);
+		
+		Item furnace = new Item("furnace");
+		furnace.setDescription("A roaring furnace.");
+		furnace.addTag(Tags.ANCHORED);
+		furnace.setWeight(450_000);
+		
+		Item anvil = new Item("anvil");
+		anvil.setDescription("A well used anvil used for shaping metal.");
+		anvil.addTag(Tags.ANCHORED);
+		anvil.addTag(Tags.HIDDEN);
+		anvil.setWeight(450_000);
+		
+		//put some dummy items into the world
+		model.putItem("room", "bakery", shelf);
+		model.putItem("room", "bakery", new Item("bread"));
+		model.putItem("room", "bakery", new Item("cake"));
+		
+		model.putItem("room", "blacksmith", furnace);
+		model.putItem("room", "blacksmith", anvil);
+		
+		return model;
 	}
 
 }
