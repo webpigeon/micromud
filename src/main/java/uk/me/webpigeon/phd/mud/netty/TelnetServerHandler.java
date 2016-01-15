@@ -8,14 +8,15 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import uk.co.unitycoders.pircbotx.commandprocessor.CommandNotFoundException;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.me.webpigeon.phd.mud.botlink.HumanMudMessage;
 
 public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 	
-
 	private final CommandProcessor processor;
+	
 	public TelnetServerHandler(CommandProcessor processor) {
 		this.processor = processor;
 	}
@@ -37,20 +38,23 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 			response = "Have a good day!";
 			close = true;
 		} else {
+			String sessionKey = ctx.channel().remoteAddress().toString();
 			try {
-				String sessionKey = "SomeUser"; //TODO
 				List<String> args = processor.processMessage(request);
-				Message message = new HumanMudMessage(args, sessionKey);
+				Message message = new HumanMudMessage(ctx, args, sessionKey);
 			
 				processor.invoke(message);
-				response = "Did you say '"+request+"'?";
+				response = "COMMAND: ";
+			} catch (CommandNotFoundException ex) {
+				response = "huh?!";
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				response = "huh?!";
+				response = "Something blew up, let webpigeon know.";
 			}
 		}
 		
 		ChannelFuture future = ctx.write(response+"\r\n");
+		ctx.flush();
 		if (close) {
 			future.addListener(ChannelFutureListener.CLOSE);
 		}

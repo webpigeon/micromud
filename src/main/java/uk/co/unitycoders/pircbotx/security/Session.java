@@ -29,4 +29,8 @@ public class Session {
     public boolean hasPermission(String permission) {
         return true;
     }
+
+	public String getCurrentUser() {
+		return null;
+	}
 }

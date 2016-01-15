@@ -2,38 +2,47 @@ package uk.me.webpigeon.phd.mud.botlink;
 
 import java.util.List;
 
+import io.netty.channel.ChannelHandlerContext;
 import uk.co.unitycoders.pircbotx.commandprocessor.AbstractMessage;
+import uk.co.unitycoders.pircbotx.security.Session;
 
 public class HumanMudMessage extends AbstractMessage {
 	
-	public HumanMudMessage(List<String> args, String sessionKey) {
+	private ChannelHandlerContext ctx;
+	
+	public HumanMudMessage(ChannelHandlerContext ctx, List<String> args, String sessionKey) {
 		super(args, sessionKey);
+		this.ctx = ctx;
 	}
 
 	@Override
 	public String getRawMessage() {
-		return null;
+		return getMessage();
 	}
 
 	@Override
 	public String getTargetName() {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = getSession();
+		if (session != null) {
+			return session.getCurrentUser();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public void respond(String message) {
-		throw new RuntimeException("use netty properly");
+		ctx.write(message+"\r\n");
 	}
 
 	@Override
 	public void respondSuccess() {
-		throw new RuntimeException("use netty properly");	
+		ctx.write("that worked.\r\n");
 	}
 
 	@Override
 	public void sendAction(String action) {
-		throw new RuntimeException("use netty properly");	
+		ctx.write("[*] "+action+"\r\n");
 	}
 
 }
