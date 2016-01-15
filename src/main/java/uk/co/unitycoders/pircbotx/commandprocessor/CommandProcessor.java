@@ -183,16 +183,7 @@ public class CommandProcessor {
     		throw new CommandNotFoundException(command);
     	}
     	
-    	try {
-    		node.fire(message);
-    	} catch (CommandNotFoundException ex) {
-    		message.respond("That's not a valid command");
-    		throw ex;
-    	} catch (Exception ex) {
-    		message.respond("Something has gone wrong, please let the developers know");
-    		ex.printStackTrace();
-    		throw ex;
-    	}
+    	node.fire(message);
     }
 
     /**

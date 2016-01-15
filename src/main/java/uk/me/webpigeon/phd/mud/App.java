@@ -13,6 +13,7 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandFixerMiddleware;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
+import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.netty.TelnetServer;
 
 /**
@@ -39,6 +40,7 @@ public class App {
 		CommandProcessor processor = new CommandProcessor(middleware);
 		
 		//todo register commands here
+		processor.register("debug", new DebugInfo());
 		
 		return processor;
 	}
