@@ -15,9 +15,11 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 import uk.me.webpigeon.phd.mud.botlink.HumanMudMessage;
+import uk.me.webpigeon.phd.mud.modules.ANSI;
 
 @Sharable
 public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
+	private final String PROMPT = "\r\n%sPROMPT: \r\n%s";
 	
 	private final CommandProcessor processor;
 	
@@ -27,13 +29,15 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ctx.write("Welcome to " + InetAddress.getLocalHost().getHostName() + "!\r\n");
-		ctx.write("It is " + new Date() + " now.\r\n");
+		ctx.write("Welcome to IGGIMUD!\r\n");
+		ctx.write(ANSI.ANSI_RED+"THIS IS A DEBUG SERVER."+ANSI.ANSI_RESET+"\r\n");
+		ctx.write(String.format(PROMPT, ANSI.ANSI_WHITE, ANSI.ANSI_RESET));
 		ctx.flush();
 	}
 	
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, String request) {
+		
 		String response;
 		boolean close = false;
 		if (request.isEmpty()) {
@@ -48,12 +52,12 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 				Message message = new HumanMudMessage(ctx, args, sessionKey);
 			
 				processor.invoke(message);
-				response = "COMMAND: ";
+				response = ANSI.ANSI_WHITE+"\r\nCOMMAND: "+ANSI.ANSI_RESET;
 			} catch (CommandNotFoundException ex) {
 				response = "huh?!";
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				response = "Something blew up, let webpigeon know.";
+				response = ANSI.ANSI_RED+"Something blew up, let webpigeon know."+ANSI.ANSI_RESET;
 			}
 		}
 		

@@ -47,8 +47,10 @@ public class WorldCommands extends AnnotationModule {
 		}
 		
 		Room room = world.getPlayerRoom(account);
-		message.respond(":: "+room.getName()+" ::");
-		message.respond(room.getDescription());
+		if (room != null) {
+			message.respond(":: "+room.getName()+" ::");
+			message.respond(room.getDescription());
+		}
 	}
 	
 	@Command({"exits", "ex"})

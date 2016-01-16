@@ -50,6 +50,7 @@ public class AccountManagement extends AnnotationModule {
 		security.startSession(session);
 		
 		session.setProp(Account.NAME_PROP, username);
+		message.respond("You are now logged in");
 	}
 	
 	@Command("register")
