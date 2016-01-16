@@ -56,7 +56,7 @@ public class DebugUtils {
 	public static ItemModel buildInventory() {		
 		ItemModel model = new DemoItemModel();
 		
-		Item shelf = new Item("shelf");
+		Item shelf = new Item("shelf", "cupboard");
 		shelf.setDescription("The shelf contians a bunch of cakes, on closer inspection you see they are made of plaster.");
 		shelf.addTag(Tags.ANCHORED);
 		shelf.setWeight(45_000);
@@ -72,6 +72,11 @@ public class DebugUtils {
 		anvil.addTag(Tags.HIDDEN);
 		anvil.setWeight(450_000);
 		
+		Item bag = new Item("bag");
+		bag.setDescription("A small woven bag");
+		bag.setWeight(10);
+		bag.addTag(Tags.CONTAINER);
+		
 		//put some dummy items into the world
 		model.putItem("room", "bakery", shelf);
 		model.putItem("room", "bakery", new Item("bread"));
@@ -79,6 +84,7 @@ public class DebugUtils {
 		
 		model.putItem("room", "blacksmith", furnace);
 		model.putItem("room", "blacksmith", anvil);
+		model.putItem("room", "tavern", bag);
 		
 		return model;
 	}
