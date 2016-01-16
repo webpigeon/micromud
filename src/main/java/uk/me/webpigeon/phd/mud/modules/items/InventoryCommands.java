@@ -93,7 +93,7 @@ public class InventoryCommands extends AnnotationModule {
 		Item selectedItem = ItemUtils.findKeyItem(itemToPickup, itemsInInventory);
 		Item selectedContainer = ItemUtils.findItem(placeToPut, itemsInRoom, itemsInInventory);
 		
-		if (!selectedContainer.hasTag(Tags.CONTAINER)) {
+		if (!selectedContainer.hasFlag(Tags.CONTAINER)) {
 			message.respond("That is not a container...");
 			return;
 		}
@@ -128,7 +128,7 @@ public class InventoryCommands extends AnnotationModule {
 			return;
 		}
 		
-		if (selectedItem.hasTag(Tags.ANCHORED)) {
+		if (selectedItem.hasFlag(Tags.ANCHORED)) {
 			message.respond("You cannot pick that up");
 			return;
 		}

@@ -16,13 +16,13 @@ public class BasicGraphWorld implements WorldModel {
 	private final Map<String, Room> playerLocations;
 	private final Map<Room, Collection<String>> peopleInRoom;
 	private final Map<String, Room> rooms;
-	private final Map<Room, Map<Direction, Room>> links;
+	private final Map<Room, Map<Direction, RoomLink>> links;
 	
 	public BasicGraphWorld() {
 		this.playerLocations = new HashMap<String, Room>();
 		this.peopleInRoom = new HashMap<Room, Collection<String>>();
 		this.rooms = new HashMap<String, Room>();
-		this.links = new HashMap<Room, Map<Direction, Room>>();
+		this.links = new HashMap<Room, Map<Direction, RoomLink>>();
 	}
 	
 	@Override
@@ -32,12 +32,11 @@ public class BasicGraphWorld implements WorldModel {
 
 	@Override
 	public Room getRoomAt(Room room, Direction direction) {
-		Map<Direction, Room> rooms = links.get(room);
-		if (rooms == null) {
+		RoomLink link = getLink(room, direction);
+		if (link == null) {
 			return null;
 		}
-		
-		return rooms.get(direction);
+		return link.room;
 	}
 
 	@Override
@@ -86,13 +85,15 @@ public class BasicGraphWorld implements WorldModel {
 	@Override
 	public void createRoom(Room room) {
 		rooms.put(room.getName(), room);
-		links.put(room, new EnumMap<Direction,Room>(Direction.class));
+		links.put(room, new EnumMap<Direction,RoomLink>(Direction.class));
 	}
 
 	@Override
 	public void link(Room from, Room to, Direction direction) {
-		Map<Direction, Room> roomLinks = links.get(from);
-		roomLinks.put(direction, to);
+		RoomLink link = new RoomLink(to, direction);
+		
+		Map<Direction, RoomLink> roomLinks = links.get(from);
+		roomLinks.put(direction, link);
 	}
 
 	@Override
@@ -102,12 +103,22 @@ public class BasicGraphWorld implements WorldModel {
 
 	@Override
 	public Collection<Direction> getExits(Room room) {
-		Map<Direction, Room> roomLinks = links.get(room);
+		Map<Direction, RoomLink> roomLinks = links.get(room);
 		if (roomLinks == null) {
 			return Collections.emptyList();
 		}
 		
 		return roomLinks.keySet();
+	}
+
+	@Override
+	public RoomLink getLink(Room room, Direction d) {
+		Map<Direction, RoomLink> rooms = links.get(room);
+		if (rooms == null) {
+			return null;
+		}
+		
+		return rooms.get(d);
 	}
 
 }

@@ -1,6 +1,6 @@
 package uk.me.webpigeon.phd.mud;
 
-import uk.me.webpigeon.phd.mud.modules.items.DemoItemModel;
+import uk.me.webpigeon.phd.mud.modules.items.BasicItemModel;
 import uk.me.webpigeon.phd.mud.modules.items.Item;
 import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.items.Tags;
@@ -54,28 +54,28 @@ public class DebugUtils {
 	}
 
 	public static ItemModel buildInventory() {		
-		ItemModel model = new DemoItemModel();
+		ItemModel model = new BasicItemModel();
 		
 		Item shelf = new Item("shelf", "cupboard");
 		shelf.setDescription("The shelf contians a bunch of cakes, on closer inspection you see they are made of plaster.");
-		shelf.addTag(Tags.ANCHORED);
+		shelf.setFlag(Tags.ANCHORED);
 		shelf.setWeight(45_000);
 		
 		Item furnace = new Item("furnace");
 		furnace.setDescription("A roaring furnace.");
-		furnace.addTag(Tags.ANCHORED);
+		furnace.setFlag(Tags.ANCHORED);
 		furnace.setWeight(450_000);
 		
 		Item anvil = new Item("anvil");
 		anvil.setDescription("A well used anvil used for shaping metal.");
-		anvil.addTag(Tags.ANCHORED);
-		anvil.addTag(Tags.HIDDEN);
+		anvil.setFlag(Tags.ANCHORED);
+		anvil.setFlag(Tags.HIDDEN);
 		anvil.setWeight(450_000);
 		
 		Item bag = new Item("bag");
 		bag.setDescription("A small woven bag");
 		bag.setWeight(10);
-		bag.addTag(Tags.CONTAINER);
+		bag.setFlag(Tags.CONTAINER);
 		
 		//put some dummy items into the world
 		model.putItem("room", "bakery", shelf);

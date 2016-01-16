@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Item {
+import uk.me.webpigeon.phd.mud.modules.MudObject;
+
+public class Item extends MudObject {
 	
 	public final String name;
 	public final String[] keywords;
@@ -46,18 +48,6 @@ public class Item {
 	private void setContained(Item item) {
 		assert parent == null || item == null;
 		this.parent = item;
-	}
-
-	public void addTag(String tag) {
-		tags.add(tag);
-	}
-	
-	public void removeTag(String tag) {
-		tags.remove(tag);
-	}
-	
-	public boolean hasTag(String tag) {
-		return tags.contains(tag);
 	}
 	
 	public void setDescription(String description) {

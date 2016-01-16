@@ -16,7 +16,8 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
-import uk.me.webpigeon.phd.mud.modules.items.DemoItemModel;
+import uk.me.webpigeon.phd.mud.modules.accounts.BasicAccountModel;
+import uk.me.webpigeon.phd.mud.modules.items.BasicItemModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryCommands;
 import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
@@ -38,7 +39,7 @@ public class App {
 		CommandProcessor processor = buildProcessor(security);
 		
 		//account related
-		AccountModel accounts = new AccountModel();
+		AccountModel accounts = new BasicAccountModel();
 		processor.register("account", new AccountManagement(security, accounts));
 		
 		//world related

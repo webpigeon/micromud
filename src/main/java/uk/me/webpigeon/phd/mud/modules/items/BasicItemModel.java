@@ -10,11 +10,11 @@ import java.util.Map;
  * Deal with items in the game world.
  * 
  */
-public class DemoItemModel implements ItemModel {
+public class BasicItemModel implements ItemModel {
 
 	private Map<String, Collection<Item>> inventories;
 
-	public DemoItemModel() {
+	public BasicItemModel() {
 		this.inventories = new HashMap<String, Collection<Item>>();
 	}
 
