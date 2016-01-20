@@ -4,6 +4,7 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.security.Secured;
 import uk.co.unitycoders.pircbotx.security.Session;
 import uk.me.webpigeon.phd.mud.modules.accounts.Account;
+import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
@@ -21,10 +22,12 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 public class PlayerMovement extends AnnotationModule {
 	
 	private WorldModel world;
+	private AccountModel accounts;
 
-	public PlayerMovement(WorldModel world) {
+	public PlayerMovement(WorldModel world, AccountModel accounts) {
 		super("go");
 		this.world = world;
+		this.accounts = accounts;
 	}
 	
 	@Command({"N", "n", "north"})
@@ -74,15 +77,17 @@ public class PlayerMovement extends AnnotationModule {
 		}
 		
 		String account = session.getProp(Account.NAME_PROP, null);
+		String currentRoomID = session.getProp(Account.ROOM_PROP, null);
 		if (account == null) {
 			message.respond("You don't appear to be playing...");
 			return;
 		}
 		
+		Room currentRoom = world.getRoomAt(currentRoomID);
 		Room spawnRoom = world.getRoomAt("limbo");
-		world.setPlayerRoom(account, spawnRoom);
-		session.setProp(Account.ROOM_PROP, spawnRoom.getName());
-		message.respond("A bright flash of light blinds you.");
+		Account currPlayer = accounts.getAccount(account);
+		
+		move(message, currPlayer, currentRoom, spawnRoom);
 	}
 	
 	protected void doMovement(Message message, Direction direction) {
@@ -109,13 +114,19 @@ public class PlayerMovement extends AnnotationModule {
 			message.respond("You can't go that way");
 			return;
 		}
+
+		Account currPlayer = accounts.getAccount(account);
+		move(message, currPlayer, room, nextRoom);
+	}
+	
+	private void move(Message message, Account account, Room oldRoom, Room newRoom) {
+		world.setPlayerRoom(account.getUsername(), newRoom);
+		account.setProperty(Account.ROOM_PROP, newRoom.getName());
+		accounts.save(account);
 		
 		String format = "%s moves from %s to %s";
-		
-		world.setPlayerRoom(account, nextRoom);
-		message.respond("You move into "+nextRoom.getName());
-		session.setProp(Account.ROOM_PROP, nextRoom.getName());
-		message.broadcast(String.format(format, account, room.getName(), nextRoom.getName()));
+		message.respond("You move into "+newRoom.getName());
+		message.broadcast(String.format(format, account, oldRoom.getName(), newRoom.getName()));
 	}
 
 }

@@ -70,8 +70,12 @@ public class AccountManagement extends AnnotationModule {
 			return;
 		}
 		
-		account = model.createAccount(username, password);
-		message.respond("You account exists and you can now log in");
+		boolean result = model.createAccount(username, password);
+		if (result) {
+			message.respond("You account exists and you can now log in");
+		} else {
+			message.respond("Your account could not be created");
+		}
 	}
 	
 }

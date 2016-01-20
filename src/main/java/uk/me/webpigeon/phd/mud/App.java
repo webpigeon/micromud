@@ -14,10 +14,10 @@ import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
+import uk.me.webpigeon.phd.mud.dataModel.DataController;
+import uk.me.webpigeon.phd.mud.dataModel.PostgresController;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
-import uk.me.webpigeon.phd.mud.modules.accounts.BasicAccountModel;
-import uk.me.webpigeon.phd.mud.modules.items.BasicItemModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryCommands;
 import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
@@ -35,16 +35,18 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		System.out.println("Starting MUD server...");	
 		
+		DataController db = new PostgresController("localhost", "mud", "mud", "password");
+		
 		SecurityManager security = new SecurityManager();
 		CommandProcessor processor = buildProcessor(security);
 		
 		//account related
-		AccountModel accounts = new BasicAccountModel();
+		AccountModel accounts = db.getAccountModel();
 		processor.register("account", new AccountManagement(security, accounts));
 		
 		//world related
 		WorldModel world = DebugUtils.buildWorld();
-		processor.register("go", new PlayerMovement(world));
+		processor.register("go", new PlayerMovement(world, accounts));
 		processor.register("world", new WorldCommands(world));
 		
 		//inventory releated

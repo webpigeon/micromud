@@ -24,7 +24,7 @@ public class BasicAccountModel implements AccountModel {
 	 * @see uk.me.webpigeon.phd.mud.modules.accounts.AccountModel#createAccount(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Account createAccount(String username, String password) {
+	public boolean createAccount(String username, String password) {
 		if (accounts.containsKey(username)) {
 			throw new RuntimeException("that username is taken");
 		}
@@ -33,7 +33,25 @@ public class BasicAccountModel implements AccountModel {
 		account.setPassword(password);
 		accounts.put(username, account);
 		
-		return account;
+		return true;
+	}
+
+	@Override
+	public void lock(String account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save(Account currPlayer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unlock(String account) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
