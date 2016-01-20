@@ -57,9 +57,16 @@ public class DebugUtils {
 		ItemModel model = new BasicItemModel();
 		
 		Item shelf = new Item("shelf", "cupboard");
-		shelf.setDescription("The shelf contians a bunch of cakes, on closer inspection you see they are made of plaster.");
+		shelf.setDescription("The sturdy oak coloured wooden shelf used to display items for sale. It shows some signs of wear from repeated usage.");
 		shelf.setFlag(Tags.ANCHORED);
+		shelf.setFlag(Tags.CONTAINER);
 		shelf.setWeight(45_000);
+		
+		//put some cakes into the shelf
+		shelf.addChild(new Item("cake"));
+		shelf.addChild(new Item("cake"));
+		shelf.addChild(new Item("cake"));
+		shelf.addChild(new Item("cake"));
 		
 		Item furnace = new Item("furnace");
 		furnace.setDescription("A roaring furnace.");

@@ -21,6 +21,20 @@ public class InventoryCommands extends AnnotationModule {
 		this.items = items;
 	}
 	
+	@Command({"items", "xi"})
+	public void onItems(Message message) {
+		Session session = message.getSession();
+		
+		String currentRoom = session.getProp(Account.ROOM_PROP, null);
+		if (currentRoom == null) {
+			message.respond("You don't appear to be playing");
+			return;
+		}
+		
+		Collection<Item> roomItems = items.getInventory("room", currentRoom);
+		message.respond("You see: "+ItemUtils.printItems(roomItems));
+	}
+	
 	@Command({"examine", "x"})
 	@Secured
 	public void onExamine(Message message) {
@@ -35,9 +49,7 @@ public class InventoryCommands extends AnnotationModule {
 		//check if an item was provided
 		String keyword = message.getArgument(2, null);
 		if (keyword == null) {
-			Collection<Item> roomItems = items.getInventory("room", currentRoom);
-			message.respond("You see: "+ItemUtils.printItems(roomItems));
-			return;
+			message.respond("What do you want to look at?");
 		}
 		
 		//generate item sets
@@ -52,6 +64,10 @@ public class InventoryCommands extends AnnotationModule {
 		}
 		
 		message.respond(selectedItem.getDescription());
+		if (selectedItem.hasFlag(Tags.CONTAINER)){
+			message.respond(selectedItem+" contains "+ItemUtils.printItems(selectedItem.getChildren()));
+		}
+		
 	}
 	
 	@Command({"inventory", "i"})
@@ -100,6 +116,39 @@ public class InventoryCommands extends AnnotationModule {
 		
 		selectedContainer.addChild(selectedItem);
 		items.takeItem("account", account, selectedItem);
+	}
+	
+	@Command({"take"})
+	@Secured
+	public void onTake(Message message) {
+		Session session = message.getSession();
+		String account = session.getProp(Account.NAME_PROP, null);
+		String currentRoom = session.getProp(Account.ROOM_PROP, null);
+		
+		if (account == null || currentRoom == null) {
+			message.respond("You don't appear to be playing");
+			return;
+		}
+		
+		String itemToPickup = message.getArgument(2, null);
+		String placeToPut = message.getArgument(3, "ground");
+		if (itemToPickup == null || placeToPut == null) {
+			message.respond("What do you want to pick up?");
+			return;
+		}
+		
+		Collection<Item> itemsInRoom = items.getInventory("room", currentRoom);
+		Collection<Item> itemsInInventory = items.getInventory("account", account);
+		
+		Item selectedContainer = ItemUtils.findItem(placeToPut, itemsInRoom, itemsInInventory);
+		if (!selectedContainer.hasFlag(Tags.CONTAINER)) {
+			message.respond("That is not a container...");
+			return;
+		}
+		
+		Item selectedItem = ItemUtils.findKeyItem(itemToPickup, selectedContainer.getChildren());
+		selectedContainer.removeChild(selectedItem);
+		items.putItem("account", account, selectedItem);
 	}
 	
 	@Command({"pickup", "take"})

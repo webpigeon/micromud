@@ -6,6 +6,10 @@ import java.util.List;
 public class ItemUtils {
 
 	public static String printItems(Collection<Item> itemSet) {
+		if (itemSet.isEmpty()) {
+			return "nothing";
+		}
+		
 		StringBuilder sb = new StringBuilder();
 		
 		boolean first = true;
