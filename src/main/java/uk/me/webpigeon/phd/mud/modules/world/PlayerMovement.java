@@ -110,9 +110,12 @@ public class PlayerMovement extends AnnotationModule {
 			return;
 		}
 		
+		String format = "%s moves from %s to %s";
+		
 		world.setPlayerRoom(account, nextRoom);
 		message.respond("You move into "+nextRoom.getName());
 		session.setProp(Account.ROOM_PROP, nextRoom.getName());
+		message.broadcast(String.format(format, account, room.getName(), nextRoom.getName()));
 	}
 
 }

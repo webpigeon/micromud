@@ -4,12 +4,15 @@ import java.net.InetAddress;
 import java.util.Date;
 import java.util.List;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.ChannelHandler.Sharable;
-
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandNotFoundException;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
@@ -21,10 +24,18 @@ import uk.me.webpigeon.phd.mud.modules.ANSI;
 public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 	private final String PROMPT = "\r\n%sPROMPT: \r\n%s";
 	
+	static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	
 	private final CommandProcessor processor;
 	
 	public TelnetServerHandler(CommandProcessor processor) {
 		this.processor = processor;
+	}
+	
+	public void broadcast(String message) {
+		for (Channel channel : channels){
+			channel.writeAndFlush(message);
+		}
 	}
 
 	@Override
@@ -33,6 +44,8 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 		ctx.write(ANSI.ANSI_RED+"THIS IS A DEBUG SERVER."+ANSI.ANSI_RESET+"\r\n");
 		ctx.write(String.format(PROMPT, ANSI.ANSI_WHITE, ANSI.ANSI_RESET));
 		ctx.flush();
+		
+		channels.add(ctx.channel());
 	}
 	
 	@Override
@@ -49,7 +62,7 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 			String sessionKey = ctx.channel().remoteAddress().toString();
 			try {
 				List<String> args = processor.processMessage(request);
-				Message message = new HumanMudMessage(ctx, args, sessionKey);
+				Message message = new HumanMudMessage(this, ctx, args, sessionKey);
 			
 				processor.invoke(message);
 				response = ANSI.ANSI_WHITE+"\r\nCOMMAND: "+ANSI.ANSI_RESET;
