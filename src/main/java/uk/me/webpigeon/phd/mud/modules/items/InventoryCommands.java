@@ -147,11 +147,15 @@ public class InventoryCommands extends AnnotationModule {
 		}
 		
 		Item selectedItem = ItemUtils.findKeyItem(itemToPickup, selectedContainer.getChildren());
+		if (selectedItem == null) {
+			message.respond("I couldn't find that item");
+			return;
+		}
 		selectedContainer.removeChild(selectedItem);
 		items.putItem("account", account, selectedItem);
 	}
 	
-	@Command({"pickup", "take"})
+	@Command({"pickup"})
 	@Secured
 	public void onPickup(Message message) {
 		Session session = message.getSession();
