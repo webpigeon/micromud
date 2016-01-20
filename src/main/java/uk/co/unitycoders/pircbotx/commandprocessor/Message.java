@@ -126,4 +126,11 @@ public interface Message {
      * @param arg the argument to insert
      */
 	public void insertArgument(int i, String arg);
+	
+	/**
+	 * Mud hacks
+	 * 
+	 * @param message
+	 */
+	void broadcast(String message);
 }
