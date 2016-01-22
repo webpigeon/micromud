@@ -21,6 +21,7 @@ import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryCommands;
 import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
+import uk.me.webpigeon.phd.mud.modules.social.SocialsCommand;
 import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
 import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
@@ -54,6 +55,9 @@ public class App {
 		//inventory releated
 		ItemModel items = DebugUtils.buildInventory(world);
 		processor.register("items", new InventoryCommands(items, accounts));
+		
+		//socials related
+		processor.register("socials", new SocialsCommand(accounts));
 		
 		//start the heart beat system
 		Heartbeat hb = new Heartbeat();

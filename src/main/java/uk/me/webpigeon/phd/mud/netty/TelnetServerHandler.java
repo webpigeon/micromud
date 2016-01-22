@@ -24,7 +24,7 @@ import uk.me.webpigeon.phd.mud.modules.ANSI;
 public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 	private final String PROMPT = "\r\n%sPROMPT: \r\n%s";
 	
-	static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	static final ChannelGroup allUsers = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	
 	private final CommandProcessor processor;
 	
@@ -33,10 +33,21 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 	}
 	
 	public void broadcast(String message) {
-		for (Channel channel : channels){
-			channel.writeAndFlush(message);
+		for (Channel channel : allUsers){
+			channel.writeAndFlush(message+"\n");
+			channel.writeAndFlush(ANSI.ANSI_WHITE+"COMMAND: \r\n"+ANSI.ANSI_RESET);
 		}
 	}
+	
+	public void sendChannel(String message, String channelName) {
+		
+		
+		for (Channel channel : allUsers){
+			channel.writeAndFlush(message+"\n");
+			channel.writeAndFlush(ANSI.ANSI_WHITE+"COMMAND: \r\n"+ANSI.ANSI_RESET);
+		}
+	}
+
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
