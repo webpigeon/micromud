@@ -117,7 +117,6 @@ public class InventoryCommands extends AnnotationModule {
 			return;
 		}
 		
-		
 		//the container we want to put stuff in might be in the room or our inventory
 		Collection<Item> itemsOnFloor = items.getInventory(room);
 		Item selectedContainer = ItemUtils.findItem(placeToPut, itemsOnFloor, myItems);
@@ -125,6 +124,12 @@ public class InventoryCommands extends AnnotationModule {
 		//check that the thing that you want to put the item in is a container
 		if (selectedContainer != null && !selectedContainer.hasFlag(Tags.CONTAINER)) {
 			message.respond("That is not a container...");
+			return;
+		}
+		
+		//putting things in themselves is silly
+		if (selectedContainer.equals(selectedItem)) {
+			message.respond("That's just silly...");
 			return;
 		}
 		
