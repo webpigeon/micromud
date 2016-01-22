@@ -77,17 +77,16 @@ public class PlayerMovement extends AnnotationModule {
 		}
 		
 		String account = session.getProp(Account.NAME_PROP, null);
-		String currentRoomID = session.getProp(Account.ROOM_PROP, null);
+		Account currPlayer = accounts.getAccount(account);
 		if (account == null) {
 			message.respond("You don't appear to be playing...");
 			return;
 		}
 		
-		Room currentRoom = world.getRoomAt(currentRoomID);
+		Room currentRoom = currPlayer.getLocation();
 		Room spawnRoom = world.getRoomAt("limbo");
-		Account currPlayer = accounts.getAccount(account);
 		
-		move(message, currPlayer, currentRoom, spawnRoom);
+		move(message, session, currPlayer, currentRoom, spawnRoom);
 	}
 	
 	protected void doMovement(Message message, Direction direction) {
@@ -98,12 +97,13 @@ public class PlayerMovement extends AnnotationModule {
 		}
 		
 		String account = session.getProp(Account.NAME_PROP, null);
+		Account currPlayer = accounts.getAccount(account);
 		if (account == null) {
 			message.respond("You don't appear to be playing...");
 			return;
 		}
 		
-		Room room = world.getPlayerRoom(account);
+		Room room = currPlayer.getLocation();
 		if (room == null) {
 			message.respond("You appear to be in the middle of nowhere...");
 			return;
@@ -115,18 +115,22 @@ public class PlayerMovement extends AnnotationModule {
 			return;
 		}
 
-		Account currPlayer = accounts.getAccount(account);
-		move(message, currPlayer, room, nextRoom);
+		move(message, session, currPlayer, room, nextRoom);
 	}
 	
-	private void move(Message message, Account account, Room oldRoom, Room newRoom) {
+	private void move(Message message, Session session, Account account, Room oldRoom, Room newRoom) {
+		
 		world.setPlayerRoom(account.getUsername(), newRoom);
+		account.setLocation(newRoom);
+		
 		account.setProperty(Account.ROOM_PROP, newRoom.getName());
+		session.getProp(Account.ROOM_PROP, newRoom.getName());
+		
 		accounts.save(account);
 		
 		String format = "%s moves from %s to %s";
 		message.respond("You move into "+newRoom.getName());
-		message.broadcast(String.format(format, account, oldRoom.getName(), newRoom.getName()));
+		message.broadcast(String.format(format, account, oldRoom, newRoom));
 	}
 
 }

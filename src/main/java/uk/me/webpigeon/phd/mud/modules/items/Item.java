@@ -11,6 +11,8 @@ import uk.me.webpigeon.phd.mud.modules.MudObject;
 
 public class Item extends MudObject {
 	
+	private final String id;
+	
 	public final String name;
 	public final String[] keywords;
 	
@@ -24,13 +26,18 @@ public class Item extends MudObject {
 	private Item parent;
 	
 	public Item(String name, String ... keywords) {
+		this.id = "item-"+System.currentTimeMillis();
 		this.name = name;
 		this.keywords = keywords;
 		this.tags = new HashSet<String>();
 		this.contained = new ArrayList<Item>();
 	}
 	
-	public void addChild(Item item) {
+	public String getID() {
+		return id;
+	}
+	
+	/*public void addChild(Item item) {
 		assert tags.contains(Tags.CONTAINER) : "Tried put something in an non-container";
 		contained.add(item);
 		
@@ -50,7 +57,7 @@ public class Item extends MudObject {
 	private void setContained(Item item) {
 		assert parent == null || item == null;
 		this.parent = item;
-	}
+	}*/
 	
 	public void setDescription(String description) {
 		this.description = description;
@@ -76,8 +83,23 @@ public class Item extends MudObject {
 		}
 	}
 
-	public Collection<Item> getChildren() {
-		return Collections.unmodifiableCollection(contained);
+	/*public Collection<Item> getChildren() {
+		//return Collections.unmodifiableCollection(contained);
+	}*/
+
+	@Override
+	public String[] getKeywords() {
+		return keywords;
+	}
+
+	@Override
+	public String getType() {
+		return "item";
+	}
+
+	@Override
+	public String getShortName() {
+		return name;
 	}
 	
 }

@@ -1,24 +1,38 @@
 package uk.me.webpigeon.phd.mud.modules.accounts;
 
+import java.sql.SQLException;
+
 import com.j256.ormlite.dao.Dao;
 
 public class OrmAccountModel implements AccountModel {
 
 	private Dao<Account, String> accountDao;
 	
-	public OrmAccountModel(Dao<Account, String> dao) {
-		this.accountDao = dao;
+	public OrmAccountModel(Dao<Account, ?> dao) {
+		this.accountDao = (Dao<Account,String>)dao;
 	}
 	
 	@Override
 	public Account getAccount(String username) {
-		return accountDao.queryForId(username);
+		try { 
+			return accountDao.queryForId(username);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
-	public boolean createAccount(String username, String password) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createAccount(String username, String password) {		
+		try {
+			Account account = new Account(username);
+			account.setPassword(password);
+			int shrug = accountDao.create(account);
+			return true;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
@@ -35,8 +49,11 @@ public class OrmAccountModel implements AccountModel {
 
 	@Override
 	public void save(Account currPlayer) {
-		// TODO Auto-generated method stub
-		
+		try {
+			accountDao.update(currPlayer);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 }

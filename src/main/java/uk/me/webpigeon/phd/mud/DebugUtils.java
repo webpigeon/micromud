@@ -53,7 +53,7 @@ public class DebugUtils {
 		return world;
 	}
 
-	public static ItemModel buildInventory() {		
+	public static ItemModel buildInventory(WorldModel world) {		
 		ItemModel model = new BasicItemModel();
 		
 		Item shelf = new Item("shelf", "cupboard");
@@ -63,10 +63,11 @@ public class DebugUtils {
 		shelf.setWeight(45_000);
 		
 		//put some cakes into the shelf
-		shelf.addChild(new Item("cake"));
-		shelf.addChild(new Item("cake"));
-		shelf.addChild(new Item("cake"));
-		shelf.addChild(new Item("cake"));
+		model.putInInventory(shelf, new Item("cake"));
+		model.putInInventory(shelf, new Item("cake"));
+		model.putInInventory(shelf, new Item("cake"));
+		model.putInInventory(shelf, new Item("cake"));
+		model.putInInventory(shelf, new Item("cake"));
 		
 		Item furnace = new Item("furnace");
 		furnace.setDescription("A roaring furnace.");
@@ -85,13 +86,13 @@ public class DebugUtils {
 		bag.setFlag(Tags.CONTAINER);
 		
 		//put some dummy items into the world
-		model.putItem("room", "bakery", shelf);
-		model.putItem("room", "bakery", new Item("bread"));
-		model.putItem("room", "bakery", new Item("cake"));
+		model.putInInventory(world.getRoomAt("bakery"), shelf);
+		model.putInInventory(world.getRoomAt("bakery"), new Item("bread"));
+		model.putInInventory(world.getRoomAt("bakery"), new Item("cake"));
 		
-		model.putItem("room", "blacksmith", furnace);
-		model.putItem("room", "blacksmith", anvil);
-		model.putItem("room", "tavern", bag);
+		model.putInInventory(world.getRoomAt("blacksmith"), furnace);
+		model.putInInventory(world.getRoomAt("blacksmith"), anvil);
+		model.putInInventory(world.getRoomAt("tavern"), bag);
 		
 		return model;
 	}

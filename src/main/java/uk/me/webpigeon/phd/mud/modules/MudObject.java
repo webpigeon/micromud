@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MudObject {
+public abstract class MudObject {
 	protected Set<String> flags;
 	
 	public MudObject() {
@@ -26,6 +26,15 @@ public class MudObject {
 	public Set<String> getFlags() {
 		return Collections.unmodifiableSet(flags);
 	}
+	
+	
+	public abstract String getID();
+	public abstract String[] getKeywords();
+	public abstract String getType();
+	
+	//narrative
+	public abstract String getShortName();
+	public abstract String getDescription();
 	
 	
 }

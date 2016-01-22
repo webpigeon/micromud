@@ -3,7 +3,9 @@ package uk.me.webpigeon.phd.mud.modules.world;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.security.Secured;
 import uk.co.unitycoders.pircbotx.security.Session;
+import uk.me.webpigeon.phd.mud.botlink.HumanMudMessage;
 import uk.me.webpigeon.phd.mud.modules.accounts.Account;
+import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 
 import java.util.Collection;
 
@@ -24,15 +26,17 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 public class WorldCommands extends AnnotationModule {
 	
 	private WorldModel world;
+	private AccountModel accountModel;
 
-	public WorldCommands(WorldModel world) {
-		super("world");
+	public WorldCommands(WorldModel world, AccountModel account) {
+		super("room");
 		this.world = world;
+		this.accountModel = account;
 	}
 	
 	@Command({"look", "l"})
 	@Secured
-	public void doLook(Message message) {
+	public void doLook(HumanMudMessage message) {
 		
 		Session session = message.getSession();
 		if (session == null || !session.isLoggedIn()) {
@@ -40,13 +44,15 @@ public class WorldCommands extends AnnotationModule {
 			return;
 		}
 		
-		String account = session.getProp(Account.NAME_PROP, null);
+		String accountID = session.getProp(Account.NAME_PROP, null);
+		Account account = accountModel.getAccount(accountID);
+		
 		if (account == null) {
 			message.respond("You don't appear to be playing...");
 			return;
 		}
 		
-		Room room = world.getPlayerRoom(account);
+		Room room = account.getLocation();
 		if (room != null) {
 			message.respond(":: "+room.getName()+" ::");
 			message.respond(room.getDescription());
@@ -63,13 +69,14 @@ public class WorldCommands extends AnnotationModule {
 			return;
 		}
 		
-		String account = session.getProp(Account.NAME_PROP, null);
+		String accountID = session.getProp(Account.NAME_PROP, null);
+		Account account = accountModel.getAccount(accountID);
 		if (account == null) {
 			message.respond("You don't appear to be playing...");
 			return;
 		}
 		
-		Room room = world.getPlayerRoom(account);
+		Room room = account.getLocation();
 		Collection<Direction> exits = world.getExits(room);	
 		message.respond("exits: "+exits);
 	}

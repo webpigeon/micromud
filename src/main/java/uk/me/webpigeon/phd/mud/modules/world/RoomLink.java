@@ -18,4 +18,29 @@ public class RoomLink extends MudObject {
 		this.direction = direction;
 	}
 
+	@Override
+	public String getID() {
+		return room+"-"+direction;
+	}
+
+	@Override
+	public String[] getKeywords() {
+		return keywords;
+	}
+
+	@Override
+	public String getType() {
+		return "roomlink";
+	}
+
+	@Override
+	public String getShortName() {
+		return direction.name()+" "+room.getShortName();
+	}
+
+	@Override
+	public String getDescription() {
+		return direction.name()+" "+room.getShortName();
+	}
+
 }

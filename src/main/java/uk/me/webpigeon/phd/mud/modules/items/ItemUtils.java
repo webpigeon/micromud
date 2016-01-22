@@ -38,7 +38,10 @@ public class ItemUtils {
 	public static Item findKeyItem(String keyword, Collection<Item> itemSet) {
 		for (Item item : itemSet) {
 			if (item.matches(keyword)){
+				System.out.println(item+" matched "+keyword);
 				return item;
+			} else {
+				System.out.println(item+" was not a "+keyword);
 			}
 		}
 		

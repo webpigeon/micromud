@@ -15,6 +15,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.dataModel.DataController;
+import uk.me.webpigeon.phd.mud.dataModel.OrmController;
 import uk.me.webpigeon.phd.mud.dataModel.PostgresController;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
@@ -35,7 +36,8 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		System.out.println("Starting MUD server...");	
 		
-		DataController db = new PostgresController("localhost", "mud", "mud", "password");
+		String databaseUrl = "jdbc:postgresql://localhost/mud";
+		DataController db = new OrmController(databaseUrl);
 		
 		SecurityManager security = new SecurityManager();
 		CommandProcessor processor = buildProcessor(security);
@@ -47,11 +49,11 @@ public class App {
 		//world related
 		WorldModel world = DebugUtils.buildWorld();
 		processor.register("go", new PlayerMovement(world, accounts));
-		processor.register("world", new WorldCommands(world));
+		processor.register("room", new WorldCommands(world, accounts));
 		
 		//inventory releated
-		ItemModel items = DebugUtils.buildInventory();
-		processor.register("items", new InventoryCommands(items));
+		ItemModel items = DebugUtils.buildInventory(world);
+		processor.register("items", new InventoryCommands(items, accounts));
 		
 		//start the heart beat system
 		Heartbeat hb = new Heartbeat();
