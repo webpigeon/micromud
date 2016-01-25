@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.netty;
+package uk.me.webpigeon.phd.mud.netty.telnet;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelHandlerAdapter;

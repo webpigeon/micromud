@@ -6,7 +6,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import uk.co.unitycoders.pircbotx.commandprocessor.AbstractMessage;
 import uk.co.unitycoders.pircbotx.security.Session;
-import uk.me.webpigeon.phd.mud.netty.TelnetServerHandler;
+import uk.me.webpigeon.phd.mud.netty.telnet.TelnetServerHandler;
 
 public class HumanMudMessage extends AbstractMessage {
 	

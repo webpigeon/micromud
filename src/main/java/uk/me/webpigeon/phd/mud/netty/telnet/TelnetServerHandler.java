@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.netty;
+package uk.me.webpigeon.phd.mud.netty.telnet;
 
 import java.net.InetAddress;
 import java.util.Date;
@@ -19,6 +19,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 import uk.me.webpigeon.phd.mud.botlink.HumanMudMessage;
 import uk.me.webpigeon.phd.mud.modules.ANSI;
+import uk.me.webpigeon.phd.mud.netty.ChannelService;
 
 @Sharable
 public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {

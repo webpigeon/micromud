@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.netty;
+package uk.me.webpigeon.phd.mud.netty.telnet;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -9,6 +9,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.ssl.SslContext;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
+import uk.me.webpigeon.phd.mud.netty.ChannelService;
 
 public class TelnetServerInitialiser extends ChannelInitializer<SocketChannel> {
 	private static final StringDecoder DECODER = new StringDecoder();

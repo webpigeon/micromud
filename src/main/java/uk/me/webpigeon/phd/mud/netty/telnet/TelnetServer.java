@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.netty;
+package uk.me.webpigeon.phd.mud.netty.telnet;
 
 import io.netty.bootstrap.ServerBootstrap;
 
@@ -13,6 +13,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
+import uk.me.webpigeon.phd.mud.netty.ChannelService;
 
 public class TelnetServer {
 	private int port;

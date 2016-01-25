@@ -26,7 +26,7 @@ import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
 import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 import uk.me.webpigeon.phd.mud.netty.ChannelService;
-import uk.me.webpigeon.phd.mud.netty.TelnetServer;
+import uk.me.webpigeon.phd.mud.netty.telnet.TelnetServer;
 
 /**
  * Hello world!
