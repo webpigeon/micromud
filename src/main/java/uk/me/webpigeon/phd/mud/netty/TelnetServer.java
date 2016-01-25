@@ -18,11 +18,13 @@ public class TelnetServer {
 	private int port;
 	private SslContext ctx;
 	private CommandProcessor processor;
+	private ChannelService channels;
 	
-	public TelnetServer(int port, CommandProcessor processor, SslContext ctx) {
+	public TelnetServer(int port, CommandProcessor processor, ChannelService channels, SslContext ctx) {
 		this.port = port;
 		this.ctx = ctx;
 		this.processor = processor;
+		this.channels = channels;
 		System.out.println("telnet server created");
 	}
 	
@@ -35,7 +37,7 @@ public class TelnetServer {
 			b.group(bossGroup, workerGroup)
 			 .channel(NioServerSocketChannel.class)
 			 .handler(new LoggingHandler(LogLevel.INFO))
-			 .childHandler(new TelnetServerInitialiser(ctx, processor))
+			 .childHandler(new TelnetServerInitialiser(ctx, processor, channels))
 			 .option(ChannelOption.SO_BACKLOG, 128)
 			 .childOption(ChannelOption.SO_KEEPALIVE, true);
 			

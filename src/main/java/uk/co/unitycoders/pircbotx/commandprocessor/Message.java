@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import io.netty.channel.Channel;
 import uk.co.unitycoders.pircbotx.security.Session;
 
 /**
@@ -133,4 +134,6 @@ public interface Message {
 	 * @param message
 	 */
 	void broadcast(String message);
+	
+	public Channel getChannel();
 }

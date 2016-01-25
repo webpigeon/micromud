@@ -17,9 +17,9 @@ public class TelnetServerInitialiser extends ChannelInitializer<SocketChannel> {
 	private final SslContext sslCtx;
 	private final TelnetServerHandler telnetProcessor;
 	
-	public TelnetServerInitialiser(SslContext sslCtx, CommandProcessor processor) {
+	public TelnetServerInitialiser(SslContext sslCtx, CommandProcessor processor, ChannelService channels) {
 		this.sslCtx = sslCtx;
-		this.telnetProcessor = new TelnetServerHandler(processor);
+		this.telnetProcessor = new TelnetServerHandler(processor, channels);
 	}
 	
 	@Override

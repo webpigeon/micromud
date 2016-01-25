@@ -5,6 +5,7 @@ import uk.co.unitycoders.pircbotx.security.Secured;
 import uk.co.unitycoders.pircbotx.security.Session;
 import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
+import uk.me.webpigeon.phd.mud.netty.ChannelService;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
@@ -23,11 +24,13 @@ public class PlayerMovement extends AnnotationModule {
 	
 	private WorldModel world;
 	private AccountModel accounts;
+	private ChannelService channels;
 
-	public PlayerMovement(WorldModel world, AccountModel accounts) {
+	public PlayerMovement(WorldModel world, ChannelService channels, AccountModel accounts) {
 		super("go");
 		this.world = world;
 		this.accounts = accounts;
+		this.channels = channels;
 	}
 	
 	@Command({"N", "n", "north"})
@@ -126,11 +129,20 @@ public class PlayerMovement extends AnnotationModule {
 		account.setProperty(Account.ROOM_PROP, newRoom.getName());
 		session.getProp(Account.ROOM_PROP, newRoom.getName());
 		
-		accounts.save(account);
+		String messageFmt = String.format("%s moves from %s to %s", account, oldRoom, newRoom);
 		
-		String format = "%s moves from %s to %s";
+		accounts.save(account);
 		message.respond("You move into "+newRoom.getName());
-		message.broadcast(String.format(format, account, oldRoom, newRoom));
+		
+		if (oldRoom != null) {
+			channels.unregsiterGroup(account.getUsername(), "room-"+oldRoom.getID());
+			channels.sendToGroup("room-"+oldRoom.getID(), messageFmt);
+		}
+		
+		if (newRoom != null) {
+			channels.sendToGroup("room-"+newRoom.getID(), messageFmt);
+			channels.registerGroup(account.getUsername(), "room-"+newRoom.getID());
+		}
 	}
 
 }

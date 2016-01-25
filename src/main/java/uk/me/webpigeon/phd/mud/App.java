@@ -25,6 +25,7 @@ import uk.me.webpigeon.phd.mud.modules.social.SocialsCommand;
 import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
 import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
+import uk.me.webpigeon.phd.mud.netty.ChannelService;
 import uk.me.webpigeon.phd.mud.netty.TelnetServer;
 
 /**
@@ -39,17 +40,18 @@ public class App {
 		
 		String databaseUrl = "jdbc:postgresql://localhost/mud";
 		DataController db = new OrmController(databaseUrl);
+		ChannelService channels = new ChannelService();
 		
 		SecurityManager security = new SecurityManager();
 		CommandProcessor processor = buildProcessor(security);
 		
 		//account related
 		AccountModel accounts = db.getAccountModel();
-		processor.register("account", new AccountManagement(security, accounts));
+		processor.register("account", new AccountManagement(security, channels, accounts));
 		
 		//world related
 		WorldModel world = DebugUtils.buildWorld();
-		processor.register("go", new PlayerMovement(world, accounts));
+		processor.register("go", new PlayerMovement(world, channels, accounts));
 		processor.register("room", new WorldCommands(world, accounts));
 		
 		//inventory releated
@@ -57,7 +59,7 @@ public class App {
 		processor.register("items", new InventoryCommands(items, accounts));
 		
 		//socials related
-		processor.register("socials", new SocialsCommand(accounts));
+		processor.register("socials", new SocialsCommand(accounts, channels));
 		
 		//start the heart beat system
 		Heartbeat hb = new Heartbeat();
@@ -65,7 +67,7 @@ public class App {
 		hbt.start();
 		
 		
-		TelnetServer telnet = buildTelnetServer(processor);
+		TelnetServer telnet = buildTelnetServer(processor, channels);
 		telnet.run();
 
 	}
@@ -85,7 +87,7 @@ public class App {
 		return processor;
 	}
 	
-	private static TelnetServer buildTelnetServer(CommandProcessor processor) throws CertificateException, SSLException {
+	private static TelnetServer buildTelnetServer(CommandProcessor processor, ChannelService channels) throws CertificateException, SSLException {
 		// SSL
 		final SslContext sslCtx;
 		if (SSL_ENABLED) {
@@ -95,7 +97,7 @@ public class App {
 			sslCtx = null;
 		}
 
-		TelnetServer telnet = new TelnetServer(1337, processor, sslCtx);
+		TelnetServer telnet = new TelnetServer(1337, processor, channels, sslCtx);
 		return telnet;
 	}
 }

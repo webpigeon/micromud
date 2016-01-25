@@ -27,25 +27,19 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 	static final ChannelGroup allUsers = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	
 	private final CommandProcessor processor;
+	private final ChannelService channels;
 	
-	public TelnetServerHandler(CommandProcessor processor) {
+	public TelnetServerHandler(CommandProcessor processor, ChannelService channels) {
 		this.processor = processor;
+		this.channels = channels;
 	}
 	
 	public void broadcast(String message) {
-		for (Channel channel : allUsers){
-			channel.writeAndFlush(message+"\n");
-			channel.writeAndFlush(ANSI.ANSI_WHITE+"COMMAND: \r\n"+ANSI.ANSI_RESET);
-		}
+		channels.sendToAll(message);
 	}
 	
 	public void sendChannel(String message, String channelName) {
-		
-		
-		for (Channel channel : allUsers){
-			channel.writeAndFlush(message+"\n");
-			channel.writeAndFlush(ANSI.ANSI_WHITE+"COMMAND: \r\n"+ANSI.ANSI_RESET);
-		}
+		channels.sendToUser(channelName, message);
 	}
 
 
@@ -56,7 +50,7 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 		ctx.write(String.format(PROMPT, ANSI.ANSI_WHITE, ANSI.ANSI_RESET));
 		ctx.flush();
 		
-		channels.add(ctx.channel());
+		allUsers.add(ctx.channel());
 	}
 	
 	@Override

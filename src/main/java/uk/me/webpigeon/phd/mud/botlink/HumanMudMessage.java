@@ -2,6 +2,7 @@ package uk.me.webpigeon.phd.mud.botlink;
 
 import java.util.List;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import uk.co.unitycoders.pircbotx.commandprocessor.AbstractMessage;
 import uk.co.unitycoders.pircbotx.security.Session;
@@ -51,6 +52,11 @@ public class HumanMudMessage extends AbstractMessage {
 	@Override
 	public void sendAction(String action) {
 		ctx.write("[*] "+action+"\r\n");
+	}
+
+	@Override
+	public Channel getChannel() {
+		return ctx.channel();
 	}
 
 }

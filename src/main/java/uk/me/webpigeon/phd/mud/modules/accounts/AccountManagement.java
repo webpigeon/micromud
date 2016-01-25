@@ -5,6 +5,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
+import uk.me.webpigeon.phd.mud.netty.ChannelService;
 
 /**
  * This is mostly useful for my debugging.
@@ -13,11 +14,13 @@ public class AccountManagement extends AnnotationModule {
 	
 	private SecurityManager security;
 	private AccountModel model;
+	private ChannelService channels;
 
-	public AccountManagement(SecurityManager security, AccountModel model) {
+	public AccountManagement(SecurityManager security, ChannelService channels, AccountModel model) {
 		super("account");
 		this.security = security;
 		this.model = model;
+		this.channels = channels;
 	}
 
 	@Command("login")
@@ -48,6 +51,8 @@ public class AccountManagement extends AnnotationModule {
 		MudSession session = new MudSession(sessionKey);
 		session.setAccount(account);
 		security.startSession(session);
+		
+		channels.register(username, message);
 		
 		session.setProp(Account.NAME_PROP, username);
 		message.respond("You are now logged in");
