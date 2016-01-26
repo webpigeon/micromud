@@ -9,22 +9,22 @@ import com.j256.ormlite.field.DatabaseField;
 import uk.me.webpigeon.phd.mud.modules.MudObject;
 
 public class Room extends MudObject {
-	
-	@DatabaseField(id=true)
+
+	@DatabaseField(id = true)
 	private final String name;
-	
+
 	@DatabaseField
 	private String description;
-	
+
 	private Map<String, String> extraDesc;
-	
+
 	Room() {
 		this(null);
 	}
-	
+
 	public Room(String name) {
 		this.name = name;
-		this.extraDesc = new HashMap<String,String>();
+		this.extraDesc = new HashMap<String, String>();
 		this.flags = new HashSet<String>();
 	}
 
@@ -35,15 +35,16 @@ public class Room extends MudObject {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	@Override
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public String getExtraDesc(String id) {
 		return extraDesc.get(id);
 	}
-	
+
 	public void setExtraDesc(String id, String desc) {
 		extraDesc.put(id, desc);
 	}
@@ -72,7 +73,8 @@ public class Room extends MudObject {
 			return false;
 		return true;
 	}
-	
+
+	@Override
 	public String toString() {
 		return name;
 	}
@@ -84,7 +86,7 @@ public class Room extends MudObject {
 
 	@Override
 	public String[] getKeywords() {
-		return new String[]{name};
+		return new String[] { name };
 	}
 
 	@Override
@@ -96,5 +98,5 @@ public class Room extends MudObject {
 	public String getShortName() {
 		return name;
 	}
-	
+
 }

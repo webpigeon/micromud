@@ -7,14 +7,14 @@ import com.j256.ormlite.dao.Dao;
 public class OrmAccountModel implements AccountModel {
 
 	private Dao<Account, String> accountDao;
-	
+
 	public OrmAccountModel(Dao<Account, ?> dao) {
-		this.accountDao = (Dao<Account,String>)dao;
+		this.accountDao = (Dao<Account, String>) dao;
 	}
-	
+
 	@Override
 	public Account getAccount(String username) {
-		try { 
+		try {
 			return accountDao.queryForId(username);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -23,7 +23,7 @@ public class OrmAccountModel implements AccountModel {
 	}
 
 	@Override
-	public boolean createAccount(String username, String password) {		
+	public boolean createAccount(String username, String password) {
 		try {
 			Account account = new Account(username);
 			account.setPassword(password);
@@ -38,13 +38,13 @@ public class OrmAccountModel implements AccountModel {
 	@Override
 	public void lock(String account) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void unlock(String account) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

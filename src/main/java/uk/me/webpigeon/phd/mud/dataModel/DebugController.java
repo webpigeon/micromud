@@ -14,7 +14,7 @@ public class DebugController implements DataController {
 	@Override
 	public void init() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

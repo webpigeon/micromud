@@ -1,7 +1,6 @@
 package uk.me.webpigeon.phd.mud.dataModel;
 
 import java.sql.SQLException;
-import java.util.Collection;
 
 import com.j256.ormlite.dao.Dao;
 
@@ -9,14 +8,12 @@ import uk.me.webpigeon.phd.mud.modules.MudObject;
 import uk.me.webpigeon.phd.mud.modules.items.Inventory;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
 import uk.me.webpigeon.phd.mud.modules.items.Item;
-import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 
 public class OrmInventoryModel implements InventoryModel {
 	private Dao<Inventory, String> model;
-	
-	
+
 	public OrmInventoryModel(Dao<Inventory, ?> model) {
-		this.model = (Dao<Inventory,String>)model;
+		this.model = (Dao<Inventory, String>) model;
 	}
 
 	@Override
@@ -24,9 +21,9 @@ public class OrmInventoryModel implements InventoryModel {
 		try {
 			Inventory inventory = getDBInventory(source);
 			if (inventory == null) {
-				return new Inventory(source.getType()+"-"+source.getID());
+				return new Inventory(source.getType() + "-" + source.getID());
 			}
-			
+
 			return inventory;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -42,12 +39,12 @@ public class OrmInventoryModel implements InventoryModel {
 	@Override
 	public void save(Inventory myItems) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Item findItem(String keyword, MudObject... objects) {
-		
+
 		for (MudObject object : objects) {
 			Inventory inventory = getInventory(object);
 			Item found = inventory.findItem(keyword);
@@ -55,7 +52,7 @@ public class OrmInventoryModel implements InventoryModel {
 				return found;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -87,5 +84,5 @@ public class OrmInventoryModel implements InventoryModel {
 			ex.printStackTrace();
 		}
 	}
-	
+
 }

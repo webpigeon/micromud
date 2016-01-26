@@ -6,11 +6,12 @@ public class MudSession extends Session {
 	private final String SESSION_FORMAT = "[%s on %s]";
 
 	private Account account;
-	
+
 	public MudSession(String sessionKey) {
 		super(sessionKey);
 	}
-	
+
+	@Override
 	public boolean isLoggedIn() {
 		return account != null;
 	}
@@ -18,14 +19,14 @@ public class MudSession extends Session {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
+
 	public Account getAccount() {
 		return account;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format(SESSION_FORMAT, account==null?"Not logged in":account, getKey());
+		return String.format(SESSION_FORMAT, account == null ? "Not logged in" : account, getKey());
 	}
 
 }

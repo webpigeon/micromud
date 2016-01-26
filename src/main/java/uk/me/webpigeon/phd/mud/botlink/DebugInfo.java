@@ -15,22 +15,22 @@ public class DebugInfo extends AnnotationModule {
 
 	@Command("sessionKey")
 	public void printSessionKey(Message message) {
-		message.respond("Your session key is "+message.getSessionKey());
+		message.respond("Your session key is " + message.getSessionKey());
 	}
-	
+
 	@Command("session")
 	public void printSession(Message message) {
-		message.respond("Your session "+message.getSession());
+		message.respond("Your session " + message.getSession());
 	}
-	
+
 	@Command("ping")
 	public void doPing(Message message) {
 		message.respond("pong");
 	}
-	
+
 	@Command("blow-up")
 	public void testException(Message message) {
 		throw new RuntimeException("exception text");
 	}
-	
+
 }

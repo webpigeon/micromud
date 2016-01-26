@@ -24,35 +24,35 @@ import java.util.Map;
 public class Session {
 	private final String sessionKey;
 	private final Map<String, String> properties;
-	
-    public Session(String sessionKey) {
+
+	public Session(String sessionKey) {
 		this.sessionKey = sessionKey;
 		this.properties = new HashMap<String, String>();
 	}
-    
-    public void setProp(String key, String value) {
-    	properties.put(key, value);
-    }
-    
-    public String getProp(String key, String defaultValue) {
-    	String returned = properties.get(key);
-    	if (returned == null) {
-    		return defaultValue;
-    	}
-    	
-    	return returned;
-    }
+
+	public void setProp(String key, String value) {
+		properties.put(key, value);
+	}
+
+	public String getProp(String key, String defaultValue) {
+		String returned = properties.get(key);
+		if (returned == null) {
+			return defaultValue;
+		}
+
+		return returned;
+	}
 
 	// TODO permission checks per session
-    public boolean hasPermissions(String[] permissions) {
-        return true;
-    }
+	public boolean hasPermissions(String[] permissions) {
+		return true;
+	}
 
-    // TODO permission checks per session
-    public boolean hasPermission(String permission) {
-        return true;
-    }
-    
+	// TODO permission checks per session
+	public boolean hasPermission(String permission) {
+		return true;
+	}
+
 	public boolean isLoggedIn() {
 		return true;
 	}

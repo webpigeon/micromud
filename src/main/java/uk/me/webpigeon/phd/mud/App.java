@@ -1,36 +1,27 @@
 package uk.me.webpigeon.phd.mud;
 
 import java.security.cert.CertificateException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.SSLException;
-
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandFixerMiddleware;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
-import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
+import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.dataModel.DataController;
 import uk.me.webpigeon.phd.mud.dataModel.OrmController;
-import uk.me.webpigeon.phd.mud.dataModel.PostgresController;
-import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryCommands;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
-import uk.me.webpigeon.phd.mud.modules.items.Item;
-import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.social.SocialsCommand;
 import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
-import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 import uk.me.webpigeon.phd.mud.netty.ChannelService;
@@ -46,65 +37,63 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		String databaseUrl = "jdbc:postgresql://localhost/mud";
 		DataController db = new OrmController(databaseUrl);
-		
+
 		if (args.length > 0) {
 			if ("createdb".equals(args[0])) {
 				db.init();
 				return;
 			}
 		}
-		
-		
-		System.out.println("Starting MUD server...");	
-		
+
+		System.out.println("Starting MUD server...");
+
 		ChannelService channels = new ChannelService();
-		
+
 		SecurityManager security = new SecurityManager();
 		CommandProcessor processor = buildProcessor(security);
-		
-		//account related
+
+		// account related
 		AccountModel accounts = db.getAccountModel();
 		processor.register("account", new AccountManagement(security, channels, accounts));
-		
-		//world related
+
+		// world related
 		WorldModel world = DebugUtils.buildWorld();
 		processor.register("go", new PlayerMovement(world, channels, accounts));
 		processor.register("room", new WorldCommands(world, accounts));
-		
-		//inventory releated
+
+		// inventory releated
 		InventoryModel items = db.getInventoryModel();
 		processor.register("items", new InventoryCommands(items, channels, accounts));
-		
-		//socials related
+
+		// socials related
 		processor.register("socials", new SocialsCommand(accounts, channels));
-		
-		//start the heart beat system
+
+		// start the heart beat system
 		Heartbeat hb = new Heartbeat();
 		Thread hbt = new Thread(hb);
 		hbt.start();
-		
-		
+
 		TelnetServer telnet = buildTelnetServer(processor, channels);
 		telnet.run();
 
 	}
-	
+
 	private static CommandProcessor buildProcessor(SecurityManager security) {
-		
+
 		List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
 		middleware.add(new CommandFixerMiddleware());
 		middleware.add(new SecurityMiddleware(security));
-		
+
 		CommandProcessor processor = new CommandProcessor(middleware);
-		
-		
-		//todo register commands here
+
+		// todo register commands here
 		processor.register("debug", new DebugInfo());
-		
+
 		return processor;
 	}
-	
-	private static TelnetServer buildTelnetServer(CommandProcessor processor, ChannelService channels) throws CertificateException, SSLException {
+
+	private static TelnetServer buildTelnetServer(CommandProcessor processor, ChannelService channels)
+			throws CertificateException, SSLException {
 		// SSL
 		final SslContext sslCtx;
 		if (SSL_ENABLED) {

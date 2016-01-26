@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.security.Session;
 
 public abstract class AbstractMessage implements Message {
 	private final List<String> args;
 	private final String sessionKey;
-	
+
 	private Session session;
-	
+
 	public AbstractMessage(List<String> args, String sessionKey) {
 		this.args = new ArrayList<String>(args);
 		this.sessionKey = sessionKey;
@@ -24,12 +23,11 @@ public abstract class AbstractMessage implements Message {
 		return session;
 	}
 
-
 	@Override
 	public void setSession(Session session) {
 		this.session = session;
 	}
-	
+
 	@Override
 	public String getSessionKey() {
 		return sessionKey;
@@ -37,33 +35,33 @@ public abstract class AbstractMessage implements Message {
 
 	@Override
 	public String getMessage() {
-    	if (args.size() <= 2) {
-    		return "";
-    	}
-    	
-    	// get the argument list
-    	List<String> cmdArgs = args.subList(2, args.size());
-    	
-    	//emulate String.join in java 1.7
-    	StringBuilder argStr = new StringBuilder();
-    	Iterator<String> argItr = cmdArgs.iterator();
-    	while(argItr.hasNext()) {
-    		argStr.append(argItr.next());
-    		if (argItr.hasNext()) {
-    			argStr.append(" ");
-    		}
-    	}
-    	
-    	return argStr.toString();
+		if (args.size() <= 2) {
+			return "";
+		}
+
+		// get the argument list
+		List<String> cmdArgs = args.subList(2, args.size());
+
+		// emulate String.join in java 1.7
+		StringBuilder argStr = new StringBuilder();
+		Iterator<String> argItr = cmdArgs.iterator();
+		while (argItr.hasNext()) {
+			argStr.append(argItr.next());
+			if (argItr.hasNext()) {
+				argStr.append(" ");
+			}
+		}
+
+		return argStr.toString();
 	}
 
 	@Override
 	public String getArgument(int id, String defaultValue) {
-    	if (args == null || args.size() <= id){
-    		return defaultValue;
-    	}
-    	
-    	return args.get(id);
+		if (args == null || args.size() <= id) {
+			return defaultValue;
+		}
+
+		return args.get(id);
 	}
 
 	@Override

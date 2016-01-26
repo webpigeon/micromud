@@ -13,22 +13,22 @@ import uk.me.webpigeon.phd.mud.modules.accounts.OrmAccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.Inventory;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
 import uk.me.webpigeon.phd.mud.modules.items.Item;
-import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 
 public class OrmController implements DataController {
 
 	private ConnectionSource conn;
-	
+
 	public OrmController(String databaseUrl) throws SQLException, ClassNotFoundException {
 		Class.forName("org.postgresql.Driver");
 		this.conn = new JdbcConnectionSource(databaseUrl, "mud", "password");
 	}
-	
+
 	@Override
 	public AccountModel getAccountModel() throws Exception {
 		return new OrmAccountModel(DaoManager.createDao(conn, Account.class));
 	}
-	
+
+	@Override
 	public InventoryModel getInventoryModel() throws Exception {
 		return new OrmInventoryModel(DaoManager.createDao(conn, Inventory.class));
 	}
@@ -37,7 +37,7 @@ public class OrmController implements DataController {
 	public void init() throws Exception {
 		TableUtils.createTable(conn, Account.class);
 		TableUtils.createTable(conn, Item.class);
-		
+
 	}
 
 }

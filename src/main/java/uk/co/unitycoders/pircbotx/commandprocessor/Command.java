@@ -39,18 +39,18 @@ import uk.co.unitycoders.pircbotx.modules.Module;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 public @interface Command {
 
-    /**
-     * Command trigger words.
-     *
-     * This is used to tell the bot what keywords it should respond to when
-     * processing actions. The keyword "default" will be called automatically if
-     * no keyword is specified. If an array of keywords is passed the bot will
-     * register all keywords for this method.
-     *
-     * @return The keywords for this command
-     */
-    public String[] value() default Module.DEFAULT_COMMAND;
+	/**
+	 * Command trigger words.
+	 *
+	 * This is used to tell the bot what keywords it should respond to when
+	 * processing actions. The keyword "default" will be called automatically if
+	 * no keyword is specified. If an array of keywords is passed the bot will
+	 * register all keywords for this method.
+	 *
+	 * @return The keywords for this command
+	 */
+	public String[]value() default Module.DEFAULT_COMMAND;
 }

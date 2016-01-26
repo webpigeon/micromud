@@ -5,17 +5,16 @@ import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 
 public class MudSession extends Session {
 	private Account account;
-	
+
 	public MudSession(String sessionKey) {
 		super(sessionKey);
 	}
 
-	
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
-	public Account getAccount(){
+
+	public Account getAccount() {
 		return account;
 	}
 }

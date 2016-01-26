@@ -9,11 +9,12 @@ import uk.co.unitycoders.pircbotx.security.Session;
 import uk.me.webpigeon.phd.mud.netty.telnet.TelnetServerHandler;
 
 public class HumanMudMessage extends AbstractMessage {
-	
+
 	private ChannelHandlerContext ctx;
 	private TelnetServerHandler handler;
-	
-	public HumanMudMessage(TelnetServerHandler handler, ChannelHandlerContext ctx, List<String> args, String sessionKey) {
+
+	public HumanMudMessage(TelnetServerHandler handler, ChannelHandlerContext ctx, List<String> args,
+			String sessionKey) {
 		super(args, sessionKey);
 		this.ctx = ctx;
 		this.handler = handler;
@@ -33,7 +34,7 @@ public class HumanMudMessage extends AbstractMessage {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public void broadcast(String message) {
 		handler.broadcast(message);
@@ -41,7 +42,7 @@ public class HumanMudMessage extends AbstractMessage {
 
 	@Override
 	public void respond(String message) {
-		ctx.write(message+"\r\n");
+		ctx.write(message + "\r\n");
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class HumanMudMessage extends AbstractMessage {
 
 	@Override
 	public void sendAction(String action) {
-		ctx.write("[*] "+action+"\r\n");
+		ctx.write("[*] " + action + "\r\n");
 	}
 
 	@Override

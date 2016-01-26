@@ -13,9 +13,9 @@ public abstract class AbstractMiddleware implements BotMiddleware {
 
 	@Override
 	public void init(LocalConfiguration config) {
-		
+
 	}
-	
+
 	@Override
 	public String preprocess(String text) {
 		return text;

@@ -22,31 +22,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SecurityManager {
-    private Map<String, Session> sessions;
+	private Map<String, Session> sessions;
 
-    public SecurityManager() {
-        this.sessions = new HashMap<String, Session>();
-    }
-    
-    public Session startSession(Session session) {    	
-        sessions.put(session.getKey(), session);
-        return session;
-    }
-    
-    public Session startSession(String sessionKey) {
-        return startSession(new Session(sessionKey));
-    }
-   
-    public void endSession(String sessionKey){
-        sessions.remove(sessionKey);
-    }
+	public SecurityManager() {
+		this.sessions = new HashMap<String, Session>();
+	}
 
-    public boolean hasActiveSession(String sessionKey) {
-        return sessions.containsKey(sessionKey);
-    }
+	public Session startSession(Session session) {
+		sessions.put(session.getKey(), session);
+		return session;
+	}
 
-    public Session getSession(String sessionKey) {
-        return sessions.get(sessionKey);
-    }
+	public Session startSession(String sessionKey) {
+		return startSession(new Session(sessionKey));
+	}
+
+	public void endSession(String sessionKey) {
+		sessions.remove(sessionKey);
+	}
+
+	public boolean hasActiveSession(String sessionKey) {
+		return sessions.containsKey(sessionKey);
+	}
+
+	public Session getSession(String sessionKey) {
+		return sessions.get(sessionKey);
+	}
 
 }
