@@ -53,6 +53,7 @@ public class WorldCommands extends AnnotationModule {
 
 		Room room = account.getLocation();
 		if (room != null) {
+			room = world.getRoomAt(room.getID());
 			message.respond(":: " + room.getName() + " ::");
 			message.respond(room.getDescription());
 		}
@@ -76,8 +77,14 @@ public class WorldCommands extends AnnotationModule {
 		}
 
 		Room room = account.getLocation();
-		Collection<RoomLink> exits = world.getExits(room);
-		message.respond("exits: " + exits);
+		room = world.getRoomAt(room.getID());
+		
+		StringBuilder exits =  new StringBuilder();
+		for (RoomLink exit : world.getExits(room)) {
+			exits.append(exit.direction+" "+exit.to.toString()+"\r\n");
+		}
+		
+		message.respond(exits.toString());
 	}
 
 }

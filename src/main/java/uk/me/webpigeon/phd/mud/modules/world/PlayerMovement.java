@@ -86,7 +86,7 @@ public class PlayerMovement extends AnnotationModule {
 			return;
 		}
 
-		Room currentRoom = currPlayer.getLocation();
+		Room currentRoom = currPlayer.getLocation();		
 		Room spawnRoom = world.getRoomAt("limbo");
 
 		move(message, session, currPlayer, currentRoom, spawnRoom);
@@ -111,6 +111,7 @@ public class PlayerMovement extends AnnotationModule {
 			message.respond("You appear to be in the middle of nowhere...");
 			return;
 		}
+		room = world.getRoomAt(room);
 
 		Room nextRoom = world.getRoomAt(room, direction);
 		if (nextRoom == null) {

@@ -11,9 +11,11 @@ import uk.me.webpigeon.phd.mud.modules.items.Item;
 
 public class OrmInventoryModel implements InventoryModel {
 	private Dao<Inventory, String> model;
+	private Dao<Item,Integer> items;
 
-	public OrmInventoryModel(Dao<Inventory, String> model) {
+	public OrmInventoryModel(Dao<Inventory, String> model, Dao<Item, Integer> items) {
 		this.model = model;
+		this.items = items;
 	}
 
 	@Override
@@ -85,8 +87,8 @@ public class OrmInventoryModel implements InventoryModel {
 		assert from != null;
 		assert to != null;
 		try {
-			from.remove(item);
-			to.remove(item);
+			item.containedIn = to;
+			
 			model.createOrUpdate(from);
 			model.createOrUpdate(to);
 		} catch (Exception ex) {
@@ -97,7 +99,7 @@ public class OrmInventoryModel implements InventoryModel {
 	@Override
 	public void putInv(MudObject container, Item item) {
 		Inventory i = getInventory(container);
-		i.add(item);
+		item.containedIn = i;
 		save(i);
 	}
 

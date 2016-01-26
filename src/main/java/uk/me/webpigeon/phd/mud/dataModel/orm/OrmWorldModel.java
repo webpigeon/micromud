@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.j256.ormlite.dao.Dao;
 
+import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.world.Direction;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.RoomLink;
@@ -13,10 +14,12 @@ import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 public class OrmWorldModel implements WorldModel {
 	private Dao<Room,String> rooms;
 	private Dao<RoomLink,String> links;
+	private Dao<Account, String> accounts;
 	
-	public OrmWorldModel(Dao<Room,String> dao, Dao<RoomLink,String> links) {
+	public OrmWorldModel(Dao<Room,String> dao, Dao<RoomLink,String> links, Dao<Account,String> accounts) {
 		this.rooms = dao;
 		this.links = links;
+		this.accounts = accounts;
 	}
 
 	@Override
@@ -27,8 +30,13 @@ public class OrmWorldModel implements WorldModel {
 
 	@Override
 	public void setPlayerRoom(String account, Room newRoom) {
-		
-
+		try {
+			Account player = accounts.queryForId(account);
+			player.setRoom(newRoom);
+			accounts.update(player);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override
@@ -59,7 +67,6 @@ public class OrmWorldModel implements WorldModel {
 		try {
 			return rooms.queryForId(roomID);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -88,6 +95,17 @@ public class OrmWorldModel implements WorldModel {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public Room getRoomAt(Room room) {
+		try {
+			rooms.refresh(room);
+			return room;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return room;
+		}
 	}
 
 }

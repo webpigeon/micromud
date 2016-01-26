@@ -109,4 +109,8 @@ public class Account extends MudObject {
 		return null;
 	}
 
+	public void setRoom(Room newRoom) {
+		this.room = newRoom;
+	}
+
 }

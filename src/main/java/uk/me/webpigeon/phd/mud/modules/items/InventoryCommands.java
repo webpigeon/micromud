@@ -47,7 +47,9 @@ public class InventoryCommands extends AnnotationModule {
 		Room room = account.getLocation();
 
 		Inventory roomItems = inventories.getInventory(room);
-		message.respond("on the floor, you see: " + roomItems);
+		String itemStr = ItemUtils.printItems(roomItems.getItems());
+		
+		message.respond("on the floor, you see: " + itemStr);
 	}
 
 	@Command({ "examine", "x" })

@@ -19,7 +19,7 @@ import uk.me.webpigeon.phd.mud.modules.world.RoomLink;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 
 public class OrmController implements DataController {
-	private static final Boolean DROP_ON_INIT = false;
+	private static final Boolean DROP_ON_INIT = true;
 
 	private ConnectionSource conn;
 
@@ -52,7 +52,10 @@ public class OrmController implements DataController {
 		Dao<RoomLink,String> links = DaoManager.createDao(conn, RoomLink.class);
 		links.setObjectCache(true);
 		
-		return new OrmWorldModel(dao, links);
+		Dao<Account,String> accounts = DaoManager.createDao(conn, Account.class);
+		links.setObjectCache(true);
+		
+		return new OrmWorldModel(dao, links, accounts);
 	}
 	
 	@Override
@@ -68,8 +71,8 @@ public class OrmController implements DataController {
 		TableUtils.createTableIfNotExists(conn, Account.class);
 		TableUtils.createTableIfNotExists(conn, Item.class);
 		TableUtils.createTableIfNotExists(conn, Inventory.class);
-		TableUtils.createTableIfNotExists(conn, Room.class);
 		TableUtils.createTableIfNotExists(conn, RoomLink.class);
+		TableUtils.createTableIfNotExists(conn, Room.class);
 	}
 
 }

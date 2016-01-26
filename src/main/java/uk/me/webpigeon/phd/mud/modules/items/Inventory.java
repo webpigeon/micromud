@@ -2,8 +2,10 @@ package uk.me.webpigeon.phd.mud.modules.items;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -15,7 +17,7 @@ public class Inventory {
 	private final String id;
 
 	@ForeignCollectionField
-	private final Collection<Item> items;
+	private final ForeignCollection<Item> items;
 
 	public Inventory() {
 		this(null);
@@ -23,7 +25,7 @@ public class Inventory {
 
 	public Inventory(String id) {
 		this.id = id;
-		this.items = new ArrayList<>();
+		this.items = null;
 	}
 
 	public Item findItem(String keyword) {
@@ -35,14 +37,10 @@ public class Inventory {
 		return null;
 	}
 
-	public void add(Item selectedItem) {
-		items.add(selectedItem);
+	public Collection<Item> getItems(){
+		return Collections.unmodifiableCollection(items);
 	}
-
-	public void remove(Item selectedItem) {
-		items.remove(selectedItem);
-	}
-
+	
 	@Override
 	public String toString() {
 		return items.toString();

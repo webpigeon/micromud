@@ -123,4 +123,9 @@ public class BasicGraphWorld implements WorldModel {
 		return rooms.get(d);
 	}
 
+	@Override
+	public Room getRoomAt(Room room) {
+		return room;
+	}
+
 }

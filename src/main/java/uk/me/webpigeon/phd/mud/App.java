@@ -42,6 +42,7 @@ public class App {
 		if (args.length > 0) {
 			if ("createdb".equals(args[0])) {
 				db.init();
+				DebugUtils.populateWorld(db.getWorldModel());
 				DebugUtils.buildInventories(db.getInventoryModel(), db.getWorldModel());
 				return;
 			}
@@ -65,11 +66,11 @@ public class App {
 		processor.register("account", new AccountManagement(security, channels, accounts));
 
 		// world related
-		WorldModel world = new BasicGraphWorld();
+		WorldModel world = db.getWorldModel();
 		processor.register("go", new PlayerMovement(world, channels, accounts));
 		processor.register("room", new WorldCommands(world, accounts));
 
-		// inventory releated
+		// inventory related
 		InventoryModel items = db.getInventoryModel();
 		processor.register("items", new InventoryCommands(items, channels, accounts));
 

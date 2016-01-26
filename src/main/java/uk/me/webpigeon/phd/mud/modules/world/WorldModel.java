@@ -13,6 +13,7 @@ public interface WorldModel {
 	void link(Room from, Room to, Direction direction);
 
 	Room getRoomAt(String roomID);
+	Room getRoomAt(Room room);
 
 	Room getRoomAt(Room room, Direction direction);
 

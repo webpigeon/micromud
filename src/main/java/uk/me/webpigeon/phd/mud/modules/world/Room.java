@@ -1,5 +1,6 @@
 package uk.me.webpigeon.phd.mud.modules.world;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,8 +37,11 @@ public class Room extends MudObject {
 
 	public Room(String name) {
 		this.name = name;
+		this.description = "You see nothing out of the ordinary";
 		this.extraDesc = new HashMap<String, String>();
 		this.flags = new HashSet<String>();
+		this.links = new ArrayList<>();
+		this.players = new ArrayList<>();
 	}
 
 	public String getName() {
