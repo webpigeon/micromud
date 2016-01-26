@@ -12,8 +12,8 @@ import uk.me.webpigeon.phd.mud.modules.items.Item;
 public class OrmInventoryModel implements InventoryModel {
 	private Dao<Inventory, String> model;
 
-	public OrmInventoryModel(Dao<Inventory, ?> model) {
-		this.model = (Dao<Inventory, String>) model;
+	public OrmInventoryModel(Dao<Inventory, String> model) {
+		this.model = model;
 	}
 
 	@Override

@@ -11,8 +11,8 @@ public class OrmAccountModel implements AccountModel {
 
 	private Dao<Account, String> accountDao;
 
-	public OrmAccountModel(Dao<Account, ?> dao) {
-		this.accountDao = (Dao<Account, String>) dao;
+	public OrmAccountModel(Dao<Account, String> dao) {
+		this.accountDao = dao;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class OrmAccountModel implements AccountModel {
 		try {
 			Account account = new Account(username);
 			account.setPassword(password);
-			int shrug = accountDao.create(account);
+			accountDao.create(account);
 			return true;
 		} catch (SQLException ex) {
 			ex.printStackTrace();

@@ -2,6 +2,7 @@ package uk.me.webpigeon.phd.mud.dataModel.orm;
 
 import java.sql.SQLException;
 
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
@@ -12,7 +13,6 @@ import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.Inventory;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
-import uk.me.webpigeon.phd.mud.modules.items.Item;
 
 public class OrmController implements DataController {
 
@@ -25,18 +25,24 @@ public class OrmController implements DataController {
 
 	@Override
 	public AccountModel getAccountModel() throws Exception {
-		return new OrmAccountModel(DaoManager.createDao(conn, Account.class));
+		Dao<Account,String> dao = DaoManager.createDao(conn, Account.class);
+		dao.setObjectCache(true);
+		
+		return new OrmAccountModel(dao);
 	}
 
 	@Override
 	public InventoryModel getInventoryModel() throws Exception {
-		return new OrmInventoryModel(DaoManager.createDao(conn, Inventory.class));
+		Dao<Inventory,String> dao = DaoManager.createDao(conn, Inventory.class);
+		dao.setObjectCache(true);
+		
+		return new OrmInventoryModel(dao);
 	}
 
 	@Override
 	public void init() throws Exception {
 		TableUtils.createTable(conn, Account.class);
-		TableUtils.createTable(conn, Item.class);
+		TableUtils.createTable(conn, Inventory.class);
 
 	}
 

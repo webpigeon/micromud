@@ -5,9 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import uk.me.webpigeon.phd.mud.modules.MudObject;
 
+@DatabaseTable
 public class Room extends MudObject {
 
 	@DatabaseField(id = true)
