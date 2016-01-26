@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountDBModel;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
+import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
 
 public class PostgresController implements DataController {
 	private static final String CONNECTION_STRING = "jdbc:postgresql://%s/%s";
@@ -20,6 +21,18 @@ public class PostgresController implements DataController {
 	
 	public AccountModel getAccountModel() throws SQLException {
 		return new AccountDBModel(connection);
+	}
+
+	@Override
+	public void init() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public InventoryModel getInventoryModel() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

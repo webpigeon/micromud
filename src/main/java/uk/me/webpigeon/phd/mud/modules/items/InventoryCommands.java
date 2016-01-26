@@ -11,19 +11,22 @@ import uk.co.unitycoders.pircbotx.security.Session;
 import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
+import uk.me.webpigeon.phd.mud.netty.ChannelService;
 
 /**
  * Commands for inventory management and access.
  */
 public class InventoryCommands extends AnnotationModule {
 	
-	private ItemModel items;
+	private InventoryModel inventories;
 	private AccountModel accounts;
-
-	public InventoryCommands(ItemModel items, AccountModel accounts) {
-		super("items");
-		this.items = items;
+	private ChannelService channels;
+	
+	public InventoryCommands(InventoryModel inventories, ChannelService channels, AccountModel accounts) {
+		super("inv");
+		this.inventories = inventories;
 		this.accounts = accounts;
+		this.channels = channels;
 	}
 
 	private Account getAccount(Session session) {
@@ -45,8 +48,8 @@ public class InventoryCommands extends AnnotationModule {
 		Account account = getAccount(message.getSession());
 		Room room = account.getLocation();
 		
-		Collection<Item> roomItems = items.getInventory(room);
-		message.respond("on the floor, you see: "+ItemUtils.printItems(roomItems));
+		Inventory roomItems = inventories.getInventory(room);
+		message.respond("on the floor, you see: "+roomItems);
 	}
 	
 	@Command({"examine", "x"})
@@ -62,12 +65,8 @@ public class InventoryCommands extends AnnotationModule {
 			return;
 		}
 		
-		//generate item sets
-		Collection<Item> roomItems = items.getInventory(room);
-		Collection<Item> accountItems = items.getInventory(account);
-		
 		//find a matching item
-		Item selectedItem = ItemUtils.findItem(keyword, roomItems, accountItems);
+		Item selectedItem = inventories.findItem(keyword, room, account);
 		if (selectedItem == null) {
 			message.respond("You can't see that item");
 			return;
@@ -75,8 +74,8 @@ public class InventoryCommands extends AnnotationModule {
 		
 		message.respond(selectedItem.getDescription());
 		if (selectedItem.hasFlag(Tags.CONTAINER)){
-			Collection<Item> containerInventory = items.getInventory(selectedItem);
-			message.respond(selectedItem+" contains "+ItemUtils.printItems(containerInventory));
+			Inventory containerInventory = inventories.getInventory(selectedItem);
+			message.respond(selectedItem+" contains "+containerInventory);
 		}
 		
 	}
@@ -86,8 +85,8 @@ public class InventoryCommands extends AnnotationModule {
 	public void onInventory(Message message) {
 		Account account = getAccount(message.getSession());
 		
-		Collection<Item> playerItems = items.getInventory(account);
-		message.respond("You are holding: "+playerItems);
+		Inventory inv = inventories.getInventory(account);
+		message.respond("You are holding: "+inv);
 	}
 	
 	@Command({"put"})
@@ -97,32 +96,31 @@ public class InventoryCommands extends AnnotationModule {
 		Account account = getAccount(message.getSession());
 		Room room = account.getLocation();
 		
-		String itemToPut = message.getArgument(2, null);
-		String placeToPut = message.getArgument(3, "ground");
-		if (itemToPut == null || placeToPut == null) {
-			message.respond("What do you want to pick up?");
-			return;
-		}
-		
 		//if they said put cheese ground they meant drop cheese.
+		String placeToPut = message.getArgument(3, "ground");
 		if ("ground".equals(placeToPut)) {
 			onDrop(message);
 			return;
 		}
 		
-		Collection<Item> myItems = items.getInventory(account);
-		Item selectedItem = ItemUtils.findKeyItem(itemToPut, myItems);
+		
+		String itemToPut = message.getArgument(2, null);
+		if (itemToPut == null) {
+			message.respond("What do you want to pick up?");
+			return;
+		}
+		
+		Inventory myItems = inventories.getInventory(account);
+		Item selectedItem = myItems.findItem(itemToPut);
 		if (selectedItem == null) {
 			message.respond("You arn't carrying a "+itemToPut);
 			return;
 		}
 		
 		//the container we want to put stuff in might be in the room or our inventory
-		Collection<Item> itemsOnFloor = items.getInventory(room);
-		Item selectedContainer = ItemUtils.findItem(placeToPut, itemsOnFloor, myItems);
-		
+		Item selectedContainer = inventories.findItem(placeToPut, room, account);
 		//check that the thing that you want to put the item in is a container
-		if (selectedContainer != null && !selectedContainer.hasFlag(Tags.CONTAINER)) {
+		if (selectedContainer == null || !selectedContainer.hasFlag(Tags.CONTAINER)) {
 			message.respond("That is not a container...");
 			return;
 		}
@@ -133,11 +131,12 @@ public class InventoryCommands extends AnnotationModule {
 			return;
 		}
 		
-		items.moveItemInventory(account, selectedContainer, selectedItem);
+		inventories.transfer(selectedItem, account, selectedContainer);
 		
-		//let everyone know what happened
-		message.respond(String.format("you place the %s into %s", selectedItem, selectedContainer));
-		message.broadcast(String.format("%s has put %s in %s", account.getUsername(), selectedItem, selectedContainer));
+		String messageToUser = String.format("You place the %s into %s", selectedItem, selectedContainer);
+		String messageFormat = String.format("%s places %s in %s", account, selectedItem, selectedContainer);
+		channels.sendToGroup("room-"+room.getID(), messageFormat);
+		message.respond(messageToUser);
 	}
 	
 	@Command({"take"})
@@ -161,29 +160,23 @@ public class InventoryCommands extends AnnotationModule {
 		}
 		
 		//we need to find the container the user meant
-		Collection<Item> myItems = items.getInventory(account);
-		Collection<Item> itemsOnFloor = items.getInventory(room);
-		Item selectedContainer = ItemUtils.findItem(containerToSearch, itemsOnFloor, myItems);
-		
-		//check the container we found was actually a container
-		if (selectedContainer != null && !selectedContainer.hasFlag(Tags.CONTAINER)) {
-			message.respond("That is not a container...");
+		Item selectedContainer = inventories.findItem(itemToFind, account, room);
+		if (selectedContainer == null || !selectedContainer.hasFlag(Tags.CONTAINER) ) {
+			message.respond("That doesn't appear to be a container...");
 			return;
 		}
 		
-		//now we need to find the item in the container
-		Collection<Item> containerInventory = items.getInventory(selectedContainer);
-		System.out.println("checking inventory: "+containerInventory);
-		Item selectedItem = ItemUtils.findKeyItem(itemToFind, containerInventory);
+		Item selectedItem = inventories.findItem(itemToFind, selectedContainer);
 		if (selectedItem == null) {
-			message.respond("I couldn't find a "+itemToFind+" on "+selectedContainer);
+			message.respond("I couldn't find that item in the container");
 			return;
 		}
 		
-		items.moveItemInventory(selectedContainer, account, selectedItem);
+		inventories.transfer(selectedItem, selectedContainer, account);
 		
+		String messageFormat = String.format("%s has taken %s from %s", account, selectedItem, selectedContainer);
+		channels.sendToGroup("room-"+room.getID(), messageFormat);
 		message.respond(String.format("you take the %s from %s", selectedItem, selectedContainer));
-		message.broadcast(String.format("%s has taken %s from %s", account.getUsername(), selectedItem, selectedContainer));
 	}
 	
 	@Command({"pickup"})
@@ -198,9 +191,7 @@ public class InventoryCommands extends AnnotationModule {
 			return;
 		}
 		
-		Collection<Item> itemsInRoom = items.getInventory(room);
-		
-		Item selectedItem = ItemUtils.findKeyItem(itemToPickup, itemsInRoom);
+		Item selectedItem = inventories.findItem(itemToPickup, room);
 		if (selectedItem == null) {
 			message.respond("I didn't understand that item");
 			return;
@@ -211,7 +202,7 @@ public class InventoryCommands extends AnnotationModule {
 			return;
 		}
 		
-		items.moveItemInventory(room, account, selectedItem);
+		inventories.transfer(selectedItem, room, account);
 	}
 	
 	@Command({"drop"})
@@ -225,14 +216,14 @@ public class InventoryCommands extends AnnotationModule {
 			return;
 		}
 			
-		Collection<Item> playerItems = items.getInventory(account);
-		Item selectedItem = ItemUtils.findKeyItem(itemToDrop, playerItems);
+		Inventory playerItems = inventories.getInventory(account);
+		Item selectedItem = playerItems.findItem(itemToDrop);
 		if (selectedItem == null) {
 			message.respond("I didn't understand that item");
 			return;
 		}
 		
-		items.moveItemInventory(account, account.getLocation(), selectedItem);
+		inventories.transfer(selectedItem, account, account.getLocation());
 	}
 	
 }

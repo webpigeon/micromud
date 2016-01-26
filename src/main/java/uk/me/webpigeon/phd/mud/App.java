@@ -1,10 +1,14 @@
 package uk.me.webpigeon.phd.mud;
 
 import java.security.cert.CertificateException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.SSLException;
+
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
@@ -17,12 +21,16 @@ import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.dataModel.DataController;
 import uk.me.webpigeon.phd.mud.dataModel.OrmController;
 import uk.me.webpigeon.phd.mud.dataModel.PostgresController;
+import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryCommands;
+import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
+import uk.me.webpigeon.phd.mud.modules.items.Item;
 import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.social.SocialsCommand;
 import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
+import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 import uk.me.webpigeon.phd.mud.netty.ChannelService;
@@ -36,10 +44,19 @@ public class App {
 	private static final Boolean SSL_ENABLED = false;
 
 	public static void main(String[] args) throws Exception {
-		System.out.println("Starting MUD server...");	
-		
 		String databaseUrl = "jdbc:postgresql://localhost/mud";
 		DataController db = new OrmController(databaseUrl);
+		
+		if (args.length > 0) {
+			if ("createdb".equals(args[0])) {
+				db.init();
+				return;
+			}
+		}
+		
+		
+		System.out.println("Starting MUD server...");	
+		
 		ChannelService channels = new ChannelService();
 		
 		SecurityManager security = new SecurityManager();
@@ -55,8 +72,8 @@ public class App {
 		processor.register("room", new WorldCommands(world, accounts));
 		
 		//inventory releated
-		ItemModel items = DebugUtils.buildInventory(world);
-		processor.register("items", new InventoryCommands(items, accounts));
+		InventoryModel items = db.getInventoryModel();
+		processor.register("items", new InventoryCommands(items, channels, accounts));
 		
 		//socials related
 		processor.register("socials", new SocialsCommand(accounts, channels));
@@ -71,7 +88,7 @@ public class App {
 		telnet.run();
 
 	}
-
+	
 	private static CommandProcessor buildProcessor(SecurityManager security) {
 		
 		List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
