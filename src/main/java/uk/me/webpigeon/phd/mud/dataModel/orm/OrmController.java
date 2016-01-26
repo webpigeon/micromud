@@ -13,6 +13,9 @@ import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.Inventory;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
+import uk.me.webpigeon.phd.mud.modules.world.Room;
+import uk.me.webpigeon.phd.mud.modules.world.RoomLink;
+import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 
 public class OrmController implements DataController {
 
@@ -39,6 +42,17 @@ public class OrmController implements DataController {
 		return new OrmInventoryModel(dao);
 	}
 
+	@Override
+	public WorldModel getWorldModel() throws Exception {
+		Dao<Room,String> dao = DaoManager.createDao(conn, Room.class);
+		dao.setObjectCache(true);
+		
+		Dao<RoomLink,String> links = DaoManager.createDao(conn, RoomLink.class);
+		links.setObjectCache(true);
+		
+		return new OrmWorldModel(dao, links);
+	}
+	
 	@Override
 	public void init() throws Exception {
 		TableUtils.createTable(conn, Account.class);

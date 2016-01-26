@@ -2,6 +2,7 @@ package uk.me.webpigeon.phd.mud;
 
 import uk.me.webpigeon.phd.mud.dataModel.debug.BasicGraphWorld;
 import uk.me.webpigeon.phd.mud.dataModel.debug.BasicItemModel;
+import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
 import uk.me.webpigeon.phd.mud.modules.items.Item;
 import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.items.Tags;
@@ -11,9 +12,7 @@ import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 
 public class DebugUtils {
 
-	public static WorldModel buildWorld() {
-		WorldModel world = new BasicGraphWorld();
-
+	public static void populateWorld(WorldModel world) {
 		Room mainStreet = new Room("Market street");
 		mainStreet.setDescription(
 				"The small cobbled street is lined with shops constructed with stone bricks on all sides.");
@@ -52,13 +51,9 @@ public class DebugUtils {
 				"You appear to be in a large empty space filled with fog. You're not sure how you got here but you feel like you should go North.");
 		world.createRoom(limbo);
 		world.link(limbo, mainStreet, Direction.NORTH);
-
-		return world;
 	}
 
-	public static ItemModel buildInventory(WorldModel world) {
-		ItemModel model = new BasicItemModel();
-
+	public static void buildInventories(InventoryModel model, WorldModel world) {
 		Item shelf = new Item("shelf", "cupboard");
 		shelf.setDescription(
 				"The sturdy oak coloured wooden shelf used to display items for sale. It shows some signs of wear from repeated usage.");
@@ -67,11 +62,11 @@ public class DebugUtils {
 		shelf.setWeight(45_000);
 
 		// put some cakes into the shelf
-		model.putInInventory(shelf, new Item("cake"));
-		model.putInInventory(shelf, new Item("cake"));
-		model.putInInventory(shelf, new Item("cake"));
-		model.putInInventory(shelf, new Item("cake"));
-		model.putInInventory(shelf, new Item("cake"));
+		model.putInv(shelf, new Item("cake"));
+		model.putInv(shelf, new Item("cake"));
+		model.putInv(shelf, new Item("cake"));
+		model.putInv(shelf, new Item("cake"));
+		model.putInv(shelf, new Item("cake"));
 
 		Item furnace = new Item("furnace");
 		furnace.setDescription("A roaring furnace.");
@@ -90,15 +85,13 @@ public class DebugUtils {
 		bag.setFlag(Tags.CONTAINER);
 
 		// put some dummy items into the world
-		model.putInInventory(world.getRoomAt("bakery"), shelf);
-		model.putInInventory(world.getRoomAt("bakery"), new Item("bread"));
-		model.putInInventory(world.getRoomAt("bakery"), new Item("cake"));
+		model.putInv(world.getRoomAt("bakery"), shelf);
+		model.putInv(world.getRoomAt("bakery"), new Item("bread"));
+		model.putInv(world.getRoomAt("bakery"), new Item("cake"));
 
-		model.putInInventory(world.getRoomAt("blacksmith"), furnace);
-		model.putInInventory(world.getRoomAt("blacksmith"), anvil);
-		model.putInInventory(world.getRoomAt("tavern"), bag);
-
-		return model;
+		model.putInv(world.getRoomAt("blacksmith"), furnace);
+		model.putInv(world.getRoomAt("blacksmith"), anvil);
+		model.putInv(world.getRoomAt("tavern"), bag);
 	}
 
 }

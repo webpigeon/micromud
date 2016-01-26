@@ -15,6 +15,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.dataModel.DataController;
+import uk.me.webpigeon.phd.mud.dataModel.debug.BasicGraphWorld;
 import uk.me.webpigeon.phd.mud.dataModel.orm.OrmController;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
@@ -41,6 +42,7 @@ public class App {
 		if (args.length > 0) {
 			if ("createdb".equals(args[0])) {
 				db.init();
+				DebugUtils.buildInventories(db.getInventoryModel(), db.getWorldModel());
 				return;
 			}
 		}
@@ -57,7 +59,7 @@ public class App {
 		processor.register("account", new AccountManagement(security, channels, accounts));
 
 		// world related
-		WorldModel world = DebugUtils.buildWorld();
+		WorldModel world = new BasicGraphWorld();
 		processor.register("go", new PlayerMovement(world, channels, accounts));
 		processor.register("room", new WorldCommands(world, accounts));
 

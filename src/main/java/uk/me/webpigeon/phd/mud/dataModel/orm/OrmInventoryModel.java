@@ -38,8 +38,12 @@ public class OrmInventoryModel implements InventoryModel {
 
 	@Override
 	public void save(Inventory myItems) {
-		// TODO Auto-generated method stub
-
+		try {
+			model.createOrUpdate(myItems);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -83,6 +87,13 @@ public class OrmInventoryModel implements InventoryModel {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	@Override
+	public void putInv(MudObject container, Item item) {
+		Inventory i = getInventory(container);
+		i.add(item);
+		save(i);
 	}
 
 }

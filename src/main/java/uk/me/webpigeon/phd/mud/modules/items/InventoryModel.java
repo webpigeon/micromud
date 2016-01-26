@@ -14,4 +14,6 @@ public interface InventoryModel {
 
 	void transfer(Item item, Inventory from, Inventory to);
 
+	void putInv(MudObject container, Item item);
+
 }
