@@ -1,6 +1,7 @@
 package uk.me.webpigeon.phd.mud.modules.items;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -14,7 +15,7 @@ public class Inventory {
 	private final String id;
 
 	@ForeignCollectionField
-	private final List<Item> items;
+	private final Collection<Item> items;
 
 	public Inventory() {
 		this(null);

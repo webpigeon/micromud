@@ -1,13 +1,17 @@
 package uk.me.webpigeon.phd.mud.modules.world;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import uk.me.webpigeon.phd.mud.modules.MudObject;
+import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 
 @DatabaseTable
 public class Room extends MudObject {
@@ -18,6 +22,12 @@ public class Room extends MudObject {
 	@DatabaseField
 	private String description;
 
+	@ForeignCollectionField(foreignFieldName="from")
+	private Collection<RoomLink> links;
+	
+	@ForeignCollectionField
+	private Collection<Account> players;
+	
 	private Map<String, String> extraDesc;
 
 	Room() {
@@ -99,6 +109,10 @@ public class Room extends MudObject {
 	@Override
 	public String getShortName() {
 		return name;
+	}
+
+	public Collection<RoomLink> getLinks() {
+		return Collections.unmodifiableCollection(links);
 	}
 
 }

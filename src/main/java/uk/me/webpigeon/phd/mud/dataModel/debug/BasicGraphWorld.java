@@ -40,10 +40,9 @@ public class BasicGraphWorld implements WorldModel {
 		if (link == null) {
 			return null;
 		}
-		return link.room;
+		return link.to;
 	}
 
-	@Override
 	public void addPlayerRoom(String account, Room room) {
 		playerLocations.put(account, room);
 
@@ -55,7 +54,6 @@ public class BasicGraphWorld implements WorldModel {
 		people.add(account);
 	}
 
-	@Override
 	public void delPlayerRoom(String account, Room room) {
 		if (playerLocations.get(account) == room) {
 			playerLocations.put(account, null);
@@ -106,13 +104,13 @@ public class BasicGraphWorld implements WorldModel {
 	}
 
 	@Override
-	public Collection<Direction> getExits(Room room) {
+	public Collection<RoomLink> getExits(Room room) {
 		Map<Direction, RoomLink> roomLinks = links.get(room);
 		if (roomLinks == null) {
 			return Collections.emptyList();
 		}
 
-		return roomLinks.keySet();
+		return roomLinks.values();
 	}
 
 	@Override

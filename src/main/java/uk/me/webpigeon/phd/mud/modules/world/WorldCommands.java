@@ -76,7 +76,7 @@ public class WorldCommands extends AnnotationModule {
 		}
 
 		Room room = account.getLocation();
-		Collection<Direction> exits = world.getExits(room);
+		Collection<RoomLink> exits = world.getExits(room);
 		message.respond("exits: " + exits);
 	}
 

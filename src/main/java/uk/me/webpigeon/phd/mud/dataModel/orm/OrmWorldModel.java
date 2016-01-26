@@ -26,20 +26,8 @@ public class OrmWorldModel implements WorldModel {
 	}
 
 	@Override
-	public void addPlayerRoom(String account, Room room) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delPlayerRoom(String account, Room room) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setPlayerRoom(String account, Room newRoom) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -53,9 +41,17 @@ public class OrmWorldModel implements WorldModel {
 	}
 
 	@Override
-	public void link(Room mainStreet, Room bakery, Direction west) {
-		// TODO Auto-generated method stub
-
+	public void link(Room from, Room to, Direction direction) {
+		try {
+			RoomLink link = new RoomLink();
+			link.from = from;
+			link.to = to;
+			link.direction = direction;
+	
+			links.create(link);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override
@@ -71,19 +67,26 @@ public class OrmWorldModel implements WorldModel {
 
 	@Override
 	public Room getRoomAt(Room room, Direction direction) {
-		// TODO Auto-generated method stub
-		return null;
+		RoomLink link = getLink(room, direction);
+		if (link == null) {
+			return null;
+		}
+		return link.to;
 	}
 
 	@Override
-	public Collection<Direction> getExits(Room room) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<RoomLink> getExits(Room room) {
+		return room.getLinks();
 	}
 
 	@Override
 	public RoomLink getLink(Room room, Direction d) {
-		// TODO Auto-generated method stub
+		for (RoomLink link : room.getLinks()) {
+			if (d.equals(link.direction)) {
+				return link;
+			}
+		}
+		
 		return null;
 	}
 

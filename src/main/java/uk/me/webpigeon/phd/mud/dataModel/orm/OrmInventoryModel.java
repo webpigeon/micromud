@@ -32,6 +32,11 @@ public class OrmInventoryModel implements InventoryModel {
 	}
 
 	private Inventory getDBInventory(MudObject source) throws SQLException {
+		if (source == null) {
+			System.err.println("Tried to add to null object: "+source);
+			return null;
+		}
+		
 		String pk_fmt = String.format("%s-%s", source.getType(), source.getID());
 		return model.queryForId(pk_fmt);
 	}

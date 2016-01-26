@@ -45,6 +45,12 @@ public class App {
 				DebugUtils.buildInventories(db.getInventoryModel(), db.getWorldModel());
 				return;
 			}
+			
+			if ("populatedb".equals(args[0])) {
+				DebugUtils.populateWorld(db.getWorldModel());
+				DebugUtils.buildInventories(db.getInventoryModel(), db.getWorldModel());
+				return;
+			}
 		}
 
 		System.out.println("Starting MUD server...");

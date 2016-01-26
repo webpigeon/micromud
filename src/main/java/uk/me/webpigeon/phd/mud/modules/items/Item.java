@@ -28,12 +28,19 @@ public class Item extends MudObject {
 	@DatabaseField
 	public double weight; // weight in grams
 	
+	@DatabaseField(foreign=true)
+	public Inventory containedIn;
+	
 	public final String[] keywords;
 	public Set<String> tags;
 
 	private List<Item> contained;
 	private Item parent;
 
+	public Item() {
+		this("db-error");
+	}
+	
 	public Item(String name, String... keywords) {
 		this.id = "item-" + System.currentTimeMillis();
 		this.name = name;

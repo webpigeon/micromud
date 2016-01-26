@@ -13,11 +13,13 @@ import uk.me.webpigeon.phd.mud.modules.accounts.Account;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.Inventory;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
+import uk.me.webpigeon.phd.mud.modules.items.Item;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.RoomLink;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 
 public class OrmController implements DataController {
+	private static final Boolean DROP_ON_INIT = false;
 
 	private ConnectionSource conn;
 
@@ -54,10 +56,20 @@ public class OrmController implements DataController {
 	}
 	
 	@Override
-	public void init() throws Exception {
-		TableUtils.createTable(conn, Account.class);
-		TableUtils.createTable(conn, Inventory.class);
-
+	public void init() throws Exception {	
+		if (DROP_ON_INIT) {
+			TableUtils.dropTable(conn, Account.class, true);
+			TableUtils.dropTable(conn, Inventory.class, true);
+			TableUtils.dropTable(conn, Item.class, true);
+			TableUtils.dropTable(conn, Room.class, true);
+			TableUtils.dropTable(conn, RoomLink.class, true);
+		}
+		
+		TableUtils.createTableIfNotExists(conn, Account.class);
+		TableUtils.createTableIfNotExists(conn, Item.class);
+		TableUtils.createTableIfNotExists(conn, Inventory.class);
+		TableUtils.createTableIfNotExists(conn, Room.class);
+		TableUtils.createTableIfNotExists(conn, RoomLink.class);
 	}
 
 }
