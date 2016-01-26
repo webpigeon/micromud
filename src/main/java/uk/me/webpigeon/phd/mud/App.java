@@ -15,7 +15,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.me.webpigeon.phd.mud.botlink.DebugInfo;
 import uk.me.webpigeon.phd.mud.dataModel.DataController;
-import uk.me.webpigeon.phd.mud.dataModel.OrmController;
+import uk.me.webpigeon.phd.mud.dataModel.orm.OrmController;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountManagement;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryCommands;

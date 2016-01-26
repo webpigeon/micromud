@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.modules;
+package uk.me.webpigeon.phd.mud.netty.telnet;
 
 public interface ANSI {
 	public static final String ANSI_RESET = "\u001B[0m";

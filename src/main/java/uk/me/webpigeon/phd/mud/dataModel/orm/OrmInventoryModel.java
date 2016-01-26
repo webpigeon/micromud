@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.dataModel;
+package uk.me.webpigeon.phd.mud.dataModel.orm;
 
 import java.sql.SQLException;
 

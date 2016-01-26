@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.modules.accounts;
+package uk.me.webpigeon.phd.mud.dataModel.postgres;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import uk.me.webpigeon.phd.mud.modules.accounts.Account;
+import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 
 public class AccountDBModel implements AccountModel {
 	private PreparedStatement getAccount;

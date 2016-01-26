@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.modules.items;
+package uk.me.webpigeon.phd.mud.dataModel.debug;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Map;
 
 import uk.me.webpigeon.phd.mud.modules.MudObject;
+import uk.me.webpigeon.phd.mud.modules.items.Item;
+import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 
 /**
  * Deal with items in the game world.

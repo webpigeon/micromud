@@ -1,10 +1,10 @@
 package uk.me.webpigeon.phd.mud;
 
-import uk.me.webpigeon.phd.mud.modules.items.BasicItemModel;
+import uk.me.webpigeon.phd.mud.dataModel.debug.BasicGraphWorld;
+import uk.me.webpigeon.phd.mud.dataModel.debug.BasicItemModel;
 import uk.me.webpigeon.phd.mud.modules.items.Item;
 import uk.me.webpigeon.phd.mud.modules.items.ItemModel;
 import uk.me.webpigeon.phd.mud.modules.items.Tags;
-import uk.me.webpigeon.phd.mud.modules.world.BasicGraphWorld;
 import uk.me.webpigeon.phd.mud.modules.world.Direction;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;

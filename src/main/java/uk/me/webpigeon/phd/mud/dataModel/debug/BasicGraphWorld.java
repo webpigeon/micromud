@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.modules.world;
+package uk.me.webpigeon.phd.mud.dataModel.debug;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -6,6 +6,11 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import uk.me.webpigeon.phd.mud.modules.world.Direction;
+import uk.me.webpigeon.phd.mud.modules.world.Room;
+import uk.me.webpigeon.phd.mud.modules.world.RoomLink;
+import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 
 /**
  * An exersize in why you shouldn't emulate databases using maps.

@@ -1,10 +1,10 @@
-package uk.me.webpigeon.phd.mud.dataModel;
+package uk.me.webpigeon.phd.mud.dataModel.postgres;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import uk.me.webpigeon.phd.mud.modules.accounts.AccountDBModel;
+import uk.me.webpigeon.phd.mud.dataModel.DataController;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
 

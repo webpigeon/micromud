@@ -1,7 +1,7 @@
-package uk.me.webpigeon.phd.mud.dataModel;
+package uk.me.webpigeon.phd.mud.dataModel.debug;
 
+import uk.me.webpigeon.phd.mud.dataModel.DataController;
 import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
-import uk.me.webpigeon.phd.mud.modules.accounts.BasicAccountModel;
 import uk.me.webpigeon.phd.mud.modules.items.InventoryModel;
 
 public class DebugController implements DataController {

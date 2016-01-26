@@ -6,10 +6,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import uk.me.webpigeon.phd.mud.modules.MudObject;
 import uk.me.webpigeon.phd.mud.modules.world.Room;
 
+@DatabaseTable
 public class Account extends MudObject {
 	public static final String NAME_PROP = "mud.accounts.name";
 	public static final String ROOM_PROP = "mud.accounts.room";
@@ -72,7 +74,7 @@ public class Account extends MudObject {
 		return username;
 	}
 
-	void setProperties(Map<String, String> properties) {
+	public void setProperties(Map<String, String> properties) {
 		changedProperties.clear();
 		accountProperties.clear();
 		accountProperties.putAll(properties);

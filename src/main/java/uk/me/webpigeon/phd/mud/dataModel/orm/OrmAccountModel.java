@@ -1,8 +1,11 @@
-package uk.me.webpigeon.phd.mud.modules.accounts;
+package uk.me.webpigeon.phd.mud.dataModel.orm;
 
 import java.sql.SQLException;
 
 import com.j256.ormlite.dao.Dao;
+
+import uk.me.webpigeon.phd.mud.modules.accounts.Account;
+import uk.me.webpigeon.phd.mud.modules.accounts.AccountModel;
 
 public class OrmAccountModel implements AccountModel {
 

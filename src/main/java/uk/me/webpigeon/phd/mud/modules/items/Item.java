@@ -5,19 +5,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import uk.me.webpigeon.phd.mud.modules.MudObject;
 
+@DatabaseTable
 public class Item extends MudObject {
 
+	@DatabaseField(id=true)
 	private final String id;
 
+	@DatabaseField
 	public final String name;
-	public final String[] keywords;
 
+	@DatabaseField
 	public String description;
+	
+	@DatabaseField
 	public String shortDesc;
-
+	
+	@DatabaseField
 	public double weight; // weight in grams
+	
+	public final String[] keywords;
 	public Set<String> tags;
 
 	private List<Item> contained;

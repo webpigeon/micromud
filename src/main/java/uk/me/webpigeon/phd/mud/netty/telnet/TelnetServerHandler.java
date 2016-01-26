@@ -14,7 +14,6 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandNotFoundException;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.me.webpigeon.phd.mud.botlink.HumanMudMessage;
-import uk.me.webpigeon.phd.mud.modules.ANSI;
 import uk.me.webpigeon.phd.mud.netty.ChannelService;
 
 @Sharable
