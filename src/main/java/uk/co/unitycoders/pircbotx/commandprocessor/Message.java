@@ -106,6 +106,7 @@ public interface Message {
 	 *            the message to send
 	 */
 	public void respond(String message);
+	public void respondError(String errorMsg);
 
 	/**
 	 * Respond that an operation was successful.

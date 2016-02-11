@@ -26,6 +26,7 @@ import uk.me.webpigeon.phd.mud.modules.world.PlayerMovement;
 import uk.me.webpigeon.phd.mud.modules.world.WorldCommands;
 import uk.me.webpigeon.phd.mud.modules.world.WorldModel;
 import uk.me.webpigeon.phd.mud.netty.ChannelService;
+import uk.me.webpigeon.phd.mud.netty.botnet.BotnetServer;
 import uk.me.webpigeon.phd.mud.netty.telnet.TelnetServer;
 
 /**
@@ -83,7 +84,11 @@ public class App {
 		hbt.start();
 
 		TelnetServer telnet = buildTelnetServer(processor, channels);
-		telnet.run();
+		new Thread(telnet).start();
+
+		BotnetServer botnet = buildBotnetServer(processor, channels);
+		new Thread(botnet).start();
+
 
 	}
 
@@ -115,4 +120,20 @@ public class App {
 		TelnetServer telnet = new TelnetServer(1337, processor, channels, sslCtx);
 		return telnet;
 	}
+
+	private static BotnetServer buildBotnetServer(CommandProcessor processor, ChannelService channels)
+			throws CertificateException, SSLException {
+		// SSL
+		final SslContext sslCtx;
+		if (SSL_ENABLED) {
+			SelfSignedCertificate ssc = new SelfSignedCertificate();
+			sslCtx = SslContext.newServerContext(ssc.certificate(), ssc.privateKey());
+		} else {
+			sslCtx = null;
+		}
+
+		BotnetServer telnet = new BotnetServer(4242, processor, channels, sslCtx);
+		return telnet;
+	}
+
 }

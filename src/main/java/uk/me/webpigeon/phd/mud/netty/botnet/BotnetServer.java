@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.mud.netty.telnet;
+package uk.me.webpigeon.phd.mud.netty.botnet;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -12,15 +12,13 @@ import io.netty.handler.ssl.SslContext;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.me.webpigeon.phd.mud.netty.ChannelService;
 
-import java.io.IOException;
-
-public class TelnetServer implements Runnable {
+public class BotnetServer implements Runnable {
 	private int port;
 	private SslContext ctx;
 	private CommandProcessor processor;
 	private ChannelService channels;
 
-	public TelnetServer(int port, CommandProcessor processor, ChannelService channels, SslContext ctx) {
+	public BotnetServer(int port, CommandProcessor processor, ChannelService channels, SslContext ctx) {
 		this.port = port;
 		this.ctx = ctx;
 		this.processor = processor;
@@ -28,7 +26,7 @@ public class TelnetServer implements Runnable {
 		System.out.println("telnet server created");
 	}
 
-	public void run()  {
+	public void run() {
 		try {
 			EventLoopGroup bossGroup = new NioEventLoopGroup();
 			EventLoopGroup workerGroup = new NioEventLoopGroup();

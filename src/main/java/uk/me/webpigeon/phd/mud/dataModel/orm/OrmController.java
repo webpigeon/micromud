@@ -38,10 +38,13 @@ public class OrmController implements DataController {
 
 	@Override
 	public InventoryModel getInventoryModel() throws Exception {
-		Dao<Inventory,String> dao = DaoManager.createDao(conn, Inventory.class);
-		dao.setObjectCache(true);
-		
-		return new OrmInventoryModel(dao);
+		Dao<Inventory,String> inventory = DaoManager.createDao(conn, Inventory.class);
+		inventory.setObjectCache(true);
+
+
+		Dao<Item,Integer> items = DaoManager.createDao(conn, Item.class);
+
+		return new OrmInventoryModel(inventory, items);
 	}
 
 	@Override

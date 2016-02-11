@@ -29,6 +29,10 @@ public class Inventory {
 	}
 
 	public Item findItem(String keyword) {
+		if (items == null) {
+			return null;
+		}
+
 		for (Item item : items) {
 			if (item.matches(keyword)) {
 				return item;
@@ -38,12 +42,20 @@ public class Inventory {
 	}
 
 	public Collection<Item> getItems(){
-		return Collections.unmodifiableCollection(items);
+		if (items == null) {
+			return Collections.emptyList();
+		} else {
+			return Collections.unmodifiableCollection(items);
+		}
 	}
 	
 	@Override
 	public String toString() {
-		return items.toString();
+		if (items != null) {
+			return items.toString();
+		} else {
+			return "empty";
+		}
 	}
 
 }

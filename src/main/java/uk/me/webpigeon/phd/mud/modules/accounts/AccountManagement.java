@@ -28,20 +28,20 @@ public class AccountManagement extends AnnotationModule {
 		String password = message.getArgument(3, null);
 
 		if (username == null || password == null) {
-			message.respond("usage: login [username] [password]");
+			message.respondError("usage: login [username] [password]");
 			return;
 		}
 
 		// check the user's details
 		Account account = model.getAccount(username);
 		if (account == null) {
-			message.respond("incorrect username");
+			message.respondError("incorrect username");
 			return;
 		}
 
 		// check passwords match
 		if (!account.isPassword(password)) {
-			message.respond("incorrect password");
+			message.respondError("incorrect password");
 			return;
 		}
 
