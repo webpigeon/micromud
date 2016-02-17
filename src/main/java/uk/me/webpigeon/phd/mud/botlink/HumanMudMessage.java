@@ -46,6 +46,11 @@ public class HumanMudMessage extends AbstractMessage {
 	}
 
 	@Override
+	public void respondError(String errorMsg) {
+		ctx.write("error: "+errorMsg+"\r\n");
+	}
+
+	@Override
 	public void respondSuccess() {
 		ctx.write("that worked.\r\n");
 	}
